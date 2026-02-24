@@ -4,6 +4,10 @@
 
 package com.mycompany.practica1deipc2;
 
+import InterfazGrafica.VistaDeInicio;
+import conexion.DBConexion;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author fernan
@@ -11,6 +15,13 @@ package com.mycompany.practica1deipc2;
 public class Practica1DeIPC2 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+       SwingUtilities.invokeLater(() -> {
+            DBConexion connection = new DBConexion();
+            
+            VistaDeInicio frameprincipal = new VistaDeInicio();
+            frameprincipal.setVisible(true);
+            
+            
+        });
     }
 }
