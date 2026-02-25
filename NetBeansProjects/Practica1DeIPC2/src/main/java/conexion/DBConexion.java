@@ -21,22 +21,7 @@ public class DBConexion {
     // ruta para acceder a la base de datos
     private static final String URL = "jdbc:mysql://"+ IP + ":"+ PUERTO + "/" + SHEMA;
     
-    private Connection connection;
-    
-    public void connect(){
-        System.out.println("url conexion "+URL);
-        try {
-            //conexion
-            connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-            System.out.println("Esquema: "+ connection.getSchema());
-            System.out.println("Catalogo: "+ connection.getCatalog());
-        } catch (Exception e) {
-            System.out.println("Error al conectarse ");
-            e.printStackTrace();
-        }
-    }
-    
-    public static Connection getConnection() throws SQLException{
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
     

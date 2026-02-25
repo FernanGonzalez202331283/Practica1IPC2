@@ -4,8 +4,7 @@
 
 package com.mycompany.practica1deipc2;
 
-import InterfazGrafica.VistaDeInicio;
-import conexion.DBConexion;
+import InterfazGrafica.Login;
 import javax.swing.SwingUtilities;
 
 /**
@@ -16,12 +15,9 @@ public class Practica1DeIPC2 {
 
     public static void main(String[] args) {
        SwingUtilities.invokeLater(() -> {
-            DBConexion connection = new DBConexion();
             
-            VistaDeInicio frameprincipal = new VistaDeInicio();
+            Login frameprincipal = new Login();
             frameprincipal.setVisible(true);
-            
-            
         });
     }
 }
