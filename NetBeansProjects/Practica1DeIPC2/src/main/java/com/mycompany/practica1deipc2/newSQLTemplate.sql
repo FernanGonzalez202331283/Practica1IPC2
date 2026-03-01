@@ -22,7 +22,20 @@ CREATE TABLE usuario (
     nombre VARCHAR(100) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    ro ENUM('JUGADOR', 'ADMIN', 'SUPERADMIN') NOT NULL,
+    rol ENUM('JUGADOR', 'ADMIN', 'SUPERADMIN') NOT NULL,
     id_sucursal INT,
     FOREIGN KEY(id_sucursal) REFERENCES sucursal(id_sucursal)
+);
+
+CREATE TABLE jugador (
+    id_jugador INT PRIMARY KEY,
+    puntos INT DEFAULT 0,
+    nivel INT DEFAULT 1,
+    FOREIGN KEY (id_jugador) REFERENCES usuario(id_usuario)
+);
+
+CREATE TABLE estadistica (
+    id_estadistica INT AUTO_INCREMENT PRIMARY KEY,
+    total_partidas INT,
+    total_puntos INT
 );

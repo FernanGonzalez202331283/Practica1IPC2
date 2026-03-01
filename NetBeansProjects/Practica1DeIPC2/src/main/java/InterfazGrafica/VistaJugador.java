@@ -11,14 +11,16 @@ import LogicaDelJuego.VistaDePartida;
  * @author fernan
  */
 public class VistaJugador extends javax.swing.JFrame {
-    
+    private String nombreJugador;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaJugador.class.getName());
 
     /**
      * Creates new form VistaJugador
      */
-    public VistaJugador() {
+    public VistaJugador(String nombreJugador) {
         initComponents();
+        this.nombreJugador = nombreJugador;
+        labelNombreJugador.setText(nombreJugador);
         this.setLocationRelativeTo(null);
     }
 
@@ -34,6 +36,7 @@ public class VistaJugador extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnComenzarPartida = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        labelNombreJugador = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,9 +45,11 @@ public class VistaJugador extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("BIENVENIDO ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 320, 50));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 320, 50));
 
+        btnComenzarPartida.setBackground(new java.awt.Color(204, 204, 204));
         btnComenzarPartida.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnComenzarPartida.setForeground(new java.awt.Color(0, 0, 0));
         btnComenzarPartida.setText("Iniciar Partida");
         btnComenzarPartida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -53,9 +58,19 @@ public class VistaJugador extends javax.swing.JFrame {
         });
         getContentPane().add(btnComenzarPartida, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 250, 70));
 
+        btnRegresar.setBackground(new java.awt.Color(204, 204, 204));
         btnRegresar.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(0, 0, 0));
         btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 160, 70));
+
+        labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
+        getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 270, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 520));
@@ -65,38 +80,19 @@ public class VistaJugador extends javax.swing.JFrame {
 
     private void btnComenzarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarPartidaActionPerformed
         // TODO add your handling code here:
-        new VistaDePartida().setVisible(true);
+        new VistaDePartida(nombreJugador).setVisible(true);
     }//GEN-LAST:event_btnComenzarPartidaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaJugador().setVisible(true));
-    }
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnComenzarPartida;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel labelNombreJugador;
     // End of variables declaration//GEN-END:variables
 }

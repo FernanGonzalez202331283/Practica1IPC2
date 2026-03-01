@@ -16,10 +16,11 @@ public class DBConexion {
     private static final String IP = "localhost";
     private static final int PUERTO = 3306;
     private static final String USER_NAME = "root";
-    private static final String SHEMA = "Pizzeria";
+    private static final String SCHEMA = "Pizzeria";
     private static final String PASSWORD = "Fernan16@2026";
     // ruta para acceder a la base de datos
-    private static final String URL = "jdbc:mysql://"+ IP + ":"+ PUERTO + "/" + SHEMA;
+    private static final String URL = "jdbc:mysql://"+ IP + ":"+ PUERTO + "/" + SCHEMA +
+            "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER_NAME, PASSWORD);

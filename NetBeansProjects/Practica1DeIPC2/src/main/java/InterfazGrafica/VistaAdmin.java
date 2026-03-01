@@ -11,12 +11,16 @@ package InterfazGrafica;
 public class VistaAdmin extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaAdmin.class.getName());
-
+    private String nombreJugador;
+    
     /**
      * Creates new form VistaAdmin
      */
-    public VistaAdmin() {
+    public VistaAdmin(String nombreJugador) {
         initComponents();
+        this.nombreJugador = this.nombreJugador;
+        labelNombreJugador.setText(nombreJugador);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -28,52 +32,63 @@ public class VistaAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        labelNombreJugador = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnGestionarProductos = new javax.swing.JButton();
+        btnConsultarEstadisticas = new javax.swing.JButton();
+        btnConsultarRankingJugadores = new javax.swing.JButton();
+        btnExportarReportes = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 260, 50));
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("BIENVENIDO");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 220, -1));
+
+        btnGestionarProductos.setText("GESTIONAR PRODUCTOS DEL MENU");
+        getContentPane().add(btnGestionarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 310, 50));
+
+        btnConsultarEstadisticas.setText("CONSULTAR ESTADISTICAS DE PARTIDAS");
+        getContentPane().add(btnConsultarEstadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 330, 50));
+
+        btnConsultarRankingJugadores.setText("CONSULTAR EL RANKING DE JIUGADORES");
+        getContentPane().add(btnConsultarRankingJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, -1, 50));
+
+        btnExportarReportes.setText("EXPORTAR REPORTES");
+        getContentPane().add(btnExportarReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(228, 440, 210, 50));
+
+        btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 510, 100, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada.png"))); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaAdmin().setVisible(true));
-    }
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+       new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConsultarEstadisticas;
+    private javax.swing.JButton btnConsultarRankingJugadores;
+    private javax.swing.JButton btnExportarReportes;
+    private javax.swing.JButton btnGestionarProductos;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel labelNombreJugador;
     // End of variables declaration//GEN-END:variables
 }

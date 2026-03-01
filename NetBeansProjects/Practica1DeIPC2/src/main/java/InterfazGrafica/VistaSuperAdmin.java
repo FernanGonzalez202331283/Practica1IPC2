@@ -11,12 +11,14 @@ package InterfazGrafica;
 public class VistaSuperAdmin extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaSuperAdmin.class.getName());
-
+    private String nombreJugador;
     /**
      * Creates new form VistaSuperAdmin
      */
-    public VistaSuperAdmin() {
+    public VistaSuperAdmin(String nombreJugador) {
         initComponents();
+        this.nombreJugador = nombreJugador;
+        labelNombreJugador.setText(nombreJugador);
         this.setLocationRelativeTo(null);
     }
 
@@ -31,12 +33,13 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         btnCrearYModificarSucursales = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCrearUsuaios = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        labelNombreJugador = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,19 +48,29 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Bienvenido");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 300, 50));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 300, 50));
 
         btnCrearYModificarSucursales.setBackground(new java.awt.Color(204, 204, 204));
         btnCrearYModificarSucursales.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
         btnCrearYModificarSucursales.setForeground(new java.awt.Color(0, 0, 0));
         btnCrearYModificarSucursales.setText("Crear y modificar sucursales");
+        btnCrearYModificarSucursales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearYModificarSucursalesActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnCrearYModificarSucursales, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 430, 60));
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 204));
-        jButton2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Registrar Usuarios Nuevos");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 380, 50));
+        btnCrearUsuaios.setBackground(new java.awt.Color(204, 204, 204));
+        btnCrearUsuaios.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnCrearUsuaios.setForeground(new java.awt.Color(0, 0, 0));
+        btnCrearUsuaios.setText("Registrar Usuarios Nuevos");
+        btnCrearUsuaios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearUsuaiosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCrearUsuaios, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 380, 50));
 
         jButton3.setBackground(new java.awt.Color(204, 204, 204));
         jButton3.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -97,7 +110,10 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 570, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 580, -1, -1));
+
+        labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 340, 40));
 
         jLabel1.setBackground(new java.awt.Color(204, 204, 204));
         jLabel1.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -117,40 +133,28 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnCrearYModificarSucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearYModificarSucursalesActionPerformed
+       FrmSucursal frm = new FrmSucursal();
+       frm.setLocationRelativeTo(this);
+       frm.setVisible(true);
+    }//GEN-LAST:event_btnCrearYModificarSucursalesActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaSuperAdmin().setVisible(true));
-    }
+    private void btnCrearUsuaiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuaiosActionPerformed
+        FrmUsuario frm = new FrmUsuario();
+        frm.setLocationRelativeTo(this);
+        frm.setVisible(true);
+    }//GEN-LAST:event_btnCrearUsuaiosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCrearUsuaios;
     private javax.swing.JButton btnCrearYModificarSucursales;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel labelNombreJugador;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,8 +4,10 @@
  */
 package LogicaDelJuego;
 
+import InterfazGrafica.VistaJugador;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -16,125 +18,170 @@ import javax.swing.table.TableCellRenderer;
  * @author fernan
  */
 public class VistaDePartida extends javax.swing.JFrame {
-    private final int MAX_PEDIDOS = 10;
-    private java.util.List<javax.swing.Timer> timers = new java.util.ArrayList<>();
+    private String nombreJugador;
+    private Thread hiloGenerador;
+    private int nivelActual = 1;
+    private int puntos = 0;
+    private int pedidosEntregados = 0;
+    private boolean turnoActivo = true;
+    private final int MAX_PEDIDOS = 20;
     private java.util.Random random = new java.util.Random();
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaDePartida.class.getName());
-
     /**
      * Creates new form VistaDePartida
      */
-    public VistaDePartida() {
+    public VistaDePartida(String nombreJugador) {
         initComponents();
+        this.nombreJugador = nombreJugador;
+        labelNombreJugador.setText(nombreJugador);
+        labelNivel.setText("Nivel: "+nivelActual);
+        labelPuntos.setText("Puntos: "+puntos);
         configurarTabla();
         configurarBarra();
         iniciarGeneradorPedidos();
+        iniciarTiempoDeTurno(120);
     }
-    
+
     private void iniciarGeneradorPedidos() {
+        hiloGenerador = new Thread(()->{
+            while(turnoActivo){
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException ex) {
+                    break;
+                }
+                javax.swing.SwingUtilities.invokeLater(()->{
+                    if(turnoActivo && jTable1.getRowCount() < MAX_PEDIDOS){
+                        generarPedido();
+                    }
+                });
+            }
+        });
+        hiloGenerador.start();
+    }
 
-    javax.swing.Timer generador = new javax.swing.Timer(4000, e -> {
-
-        if (jTable1.getRowCount() < MAX_PEDIDOS) {
-            generarPedido();
-        }
-
-    });
-
-    generador.start();
-}
     private void generarPedido() {
 
-    String[] productos = {"Pizza", "Taco", "Hamburguesa", "HotDog"};
-    String productoAleatorio = productos[random.nextInt(productos.length)];
+        String[] productos = {"Pizza", "Taco", "Hamburguesa", "HotDog"};
+        String productoAleatorio = productos[random.nextInt(productos.length)];
 
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        int tiempoBase = obtenerTiempoSegunNivel();
+        int tiempoInicial = tiempoBase;
 
-    int tiempoInicial = 60 + random.nextInt(41); // entre 60 y 100
+        modelo.addRow(new Object[]{productoAleatorio, "RECIBIDA", tiempoInicial});
 
-    modelo.addRow(new Object[]{productoAleatorio, "RECIBIDO", tiempoInicial});
+        int nuevaFila = modelo.getRowCount() - 1;
 
-    int nuevaFila = modelo.getRowCount() - 1;
+        iniciarTiempoFila(nuevaFila);
+    }
 
-    iniciarTiempoFila(nuevaFila);
-}
     private void iniciarTiempoFila(int fila) {
+        Thread hilo = new Thread(() -> {
+            while (turnoActivo) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    break;
+                }
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    //verificacion de que la fila exista
+                    if (fila >= jTable1.getRowCount()) {
+                        return;
+                    }
+                    Object tiempoObj = jTable1.getValueAt(fila, 2);
+                    Object estadoObj = jTable1.getValueAt(fila, 1);
 
-    javax.swing.Timer timer = new javax.swing.Timer(200, null);
-
-    timer.addActionListener(e -> {
-
-        int tiempoActual = (int) jTable1.getValueAt(fila, 2);
-        String estado = (String) jTable1.getValueAt(fila, 1);
-
-        if (estado.equals("ENTREGADO") || 
-            estado.equals("CANCELADO") || 
-            estado.equals("NO_ENTREGADO")) {
-            timer.stop();
-            return;
+                    if (tiempoObj == null || estadoObj == null) {
+                        return;
+                    }
+                    int tiempoActual = (int) tiempoObj;
+                    String estado = estadoObj.toString();
+                    if (estado.equals("ENTREGADA")
+                            || estado.equals("CANCELADA")
+                            || estado.equals("NO_ENTREGADO")) {
+                        return;
+                    }
+                    if (tiempoActual > 0) {
+                        jTable1.setValueAt(tiempoActual - 1, fila, 2);
+                    } else {
+                        jTable1.setValueAt("NO_ENTREGADO", fila, 1);
+                        jTable1.setValueAt(0, fila, 2);
+                        puntos -=50;
+                        if(puntos<0)puntos =0;
+                        actualizarPuntos();
+                        return;
+                    }
+                });
+            }
+        });
+        hilo.start();
+    }
+    
+    private int obtenerTiempoSegunNivel(){
+        int base;
+        switch(nivelActual){
+            case 1:
+                base= 60;
+            case 2:
+                base = 40;
+            case 3:
+                base = 20;
+            default:
+                base = 60;
         }
-
-        if (tiempoActual > 0) {
-            jTable1.setValueAt(tiempoActual - 1, fila, 2);
-        } else {
-            jTable1.setValueAt("NO_ENTREGADO", fila, 1);
-            timer.stop();
-        }
-
-    });
-
-    timers.add(timer);
-    timer.start();
-}
+        int variacion = random.nextInt(21) - 10;
+        return base + variacion;
+    }
+    
     private void configurarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Producto", "Estado", "Tiempo"}
+        ) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 2) {
+                    return Integer.class;
+                }
+                return Object.class;
+            }
+        };
 
-    DefaultTableModel modelo = new DefaultTableModel(
-        new Object[][] {
-            {"Pizza", "RECIBIDO", 100},
-            {"Taco", "RECIBIDO", 100}
-        },
-        new String[] {"Producto", "Estado", "Tiempo"}
-    ) {
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            if (columnIndex == 2) return Integer.class;
-            return Object.class;
-        }
-    };
+        jTable1.setModel(modelo);
+    }
 
-    jTable1.setModel(modelo);
-}
     class ProgressBarRenderer extends JProgressBar implements TableCellRenderer {
 
-    public ProgressBarRenderer() {
-        setMinimum(0);
-        setMaximum(100);
-        setStringPainted(false);
-    }
-
-    @Override
-    public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected,
-            boolean hasFocus, int row, int column) {
-
-        int tiempo = (Integer) value;
-        setValue(tiempo);
-
-        if (tiempo > 60) {
-            setForeground(Color.GREEN);
-        } else if (tiempo > 30) {
-            setForeground(Color.ORANGE);
-        } else {
-            setForeground(Color.RED);
+        public ProgressBarRenderer() {
+            setMinimum(0);
+            setMaximum(100);
+            setStringPainted(false);
         }
 
-        return this;
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int column) {
+
+            int tiempo = (Integer) value;
+            setValue(tiempo);
+
+            if (tiempo > 60) {
+                setForeground(Color.GREEN);
+            } else if (tiempo > 30) {
+                setForeground(Color.ORANGE);
+            } else {
+                setForeground(Color.RED);
+            }
+
+            return this;
+        }
     }
-}
+
     private void configurarBarra() {
-    jTable1.getColumn("Tiempo")
-           .setCellRenderer(new ProgressBarRenderer());
-}
+        jTable1.getColumn("Tiempo")
+                .setCellRenderer(new ProgressBarRenderer());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -147,9 +194,11 @@ public class VistaDePartida extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        labelNombreJugador = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        labelTiempoDeTurno = new javax.swing.JLabel();
+        labelNivel = new javax.swing.JLabel();
+        labelPuntos = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -162,17 +211,27 @@ public class VistaDePartida extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("jLabel1");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Jugador: ");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 110, -1));
 
-        jLabel2.setText("jLabel2");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
+        labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        labelNombreJugador.setText("jLabel2");
+        jPanel1.add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 220, 30));
 
-        jLabel3.setText("jLabel3");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, -1, -1));
+        jLabel3.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Tiempo De Turno: ");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 50, -1, -1));
 
-        jLabel4.setText("jLabel4");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, -1, -1));
+        labelTiempoDeTurno.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        labelTiempoDeTurno.setText("jLabel4");
+        jPanel1.add(labelTiempoDeTurno, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 40, 170, 30));
+
+        labelNivel.setText("jLabel2");
+        jPanel1.add(labelNivel, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 110, 30));
+        jPanel1.add(labelPuntos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 40, 120, 30));
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -192,21 +251,27 @@ public class VistaDePartida extends javax.swing.JFrame {
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnCambiarDeEstado.setBackground(new java.awt.Color(204, 204, 204));
+        btnCambiarDeEstado.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnCambiarDeEstado.setForeground(new java.awt.Color(0, 0, 0));
         btnCambiarDeEstado.setText("Avanzar estado");
         btnCambiarDeEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCambiarDeEstadoActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCambiarDeEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, -1, -1));
+        jPanel3.add(btnCambiarDeEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 230, -1));
 
+        btnCancelarPedido.setBackground(new java.awt.Color(204, 204, 204));
+        btnCancelarPedido.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnCancelarPedido.setForeground(new java.awt.Color(0, 0, 0));
         btnCancelarPedido.setText("Cancelar pedido");
         btnCancelarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarPedidoActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCancelarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, -1, -1));
+        jPanel3.add(btnCancelarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -241,98 +306,182 @@ public class VistaDePartida extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCambiarDeEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarDeEstadoActionPerformed
-        
-    int fila = jTable1.getSelectedRow();
 
-    if (fila == -1) {
-        return; // no hay selección
-    }
+        int fila = jTable1.getSelectedRow();
 
-    String estadoActual = (String) jTable1.getValueAt(fila, 1);
-
-    switch (estadoActual) {
-
-        case "RECIBIDO":
-            jTable1.setValueAt("EN_PREPARACION", fila, 1);
-            break;
-
-        case "EN_PREPARACION":
-            jTable1.setValueAt("LISTO", fila, 1);
-            break;
-
-        case "LISTO":
-            jTable1.setValueAt("ENTREGADO", fila, 1);
-            break;
-
-        case "ENTREGADO":
-        case "NO_ENTREGADO":
-        case "CANCELADO":
-            // no hacer nada
-            break;
-    }
-    }//GEN-LAST:event_btnCambiarDeEstadoActionPerformed
-
-    private void btnCancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPedidoActionPerformed
-        // TODO add your handling code here:
-        
-    int fila = jTable1.getSelectedRow();
-
-    if (fila == -1) {
-        return; // No hay selección
-    }
-
-    String estadoActual = (String) jTable1.getValueAt(fila, 1);
-
-    // Si ya terminó, no hacer nada
-    if (estadoActual.equals("ENTREGADO") ||
-        estadoActual.equals("NO_ENTREGADO") ||
-        estadoActual.equals("CANCELADO")) {
-        return;
-    }
-
-    // Cambiar estado
-    jTable1.setValueAt("CANCELADO", fila, 1);
-
-    // Opcional: poner tiempo en 0
-    jTable1.setValueAt(0, fila, 2);
-    }//GEN-LAST:event_btnCancelarPedidoActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        if (fila == -1) {
+            return; // no hay selección
         }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaDePartida().setVisible(true));
+        String estadoActual = (String) jTable1.getValueAt(fila, 1);
+
+        switch (estadoActual) {
+
+            case "RECIBIDA":
+                jTable1.setValueAt("PREPARANDO", fila, 1);
+                break;
+            case "PREPARANDO":
+                jTable1.setValueAt("EN_HORNO", fila, 1);
+                break;
+            case "EN_HORNO":
+                jTable1.setValueAt("ENTREGADA", fila, 1);
+                int tiempoRestante = (int) jTable1.getValueAt(fila, 2);
+                jTable1.setValueAt(0, fila, 2);
+                puntos+=100;
+                if(tiempoRestante > 40){
+                    puntos+=50;
+                }
+                actualizarPuntos();
+                pedidosEntregados++;
+                verificarSubidaDeNivel();
+                break;
+            case "ENTREGADA":
+            case "NO_ENTREGADO":
+            case "CANCELADA":
+                // no hacer nada
+                break;
+        }
+    }//GEN-LAST:event_btnCambiarDeEstadoActionPerformed
+    private void actualizarPuntos(){
+        labelPuntos.setText("Puntos: " + puntos);
     }
+    private void verificarSubidaDeNivel(){
+        if(nivelActual == 1 && pedidosEntregados >=10){
+            subirNivel();
+        }else if(nivelActual == 2 && pedidosEntregados >=15){
+            subirNivel();
+        }
+    }
+    
+    private void subirNivel(){
+        nivelActual++;
+        labelNivel.setText("Nivel: " + nivelActual);
+        JOptionPane.showMessageDialog(this, "Subiste de nivel, ahora tu nivel es "+nivelActual+
+                "ahora los pedidos tendran menos tiempo");
+        puntos+=200;
+        actualizarPuntos();
+    }
+    private void btnCancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPedidoActionPerformed
+        int fila = jTable1.getSelectedRow();
 
+        if (fila == -1) {
+            return; //No hay seleccion
+        }
+
+        String estadoActual = (String) jTable1.getValueAt(fila, 1);
+
+        // 
+        if (!estadoActual.equals("RECIBIDA")
+            && !estadoActual.equals("PREPARANDO")) {
+            return;
+        }
+
+        // Cambiar estado
+        jTable1.setValueAt("CANCELADA", fila, 1);
+        jTable1.setValueAt(0, fila, 2);
+        
+        puntos -=20;
+        if(puntos<0)puntos =0;
+        actualizarPuntos();
+        
+    }//GEN-LAST:event_btnCancelarPedidoActionPerformed
+    private void iniciarTiempoDeTurno(int segundosTotal){
+       Thread hilo = new Thread(()->{
+          for(int i = segundosTotal; i >=0; i--){
+              int minutos = i/60;
+              int segundos = i % 60;
+              
+              String tiempoFormato = String.format("%02d:%02d", minutos,segundos);
+              javax.swing.SwingUtilities.invokeLater(()->{
+                  labelTiempoDeTurno.setText(tiempoFormato);
+              });
+              
+              if(i==0){
+                  finalizarTurno();
+                  break;
+              }
+              try {
+                  Thread.sleep(1000);
+              } catch (InterruptedException ex) {
+                  return;
+              }
+          } 
+       });
+       hilo.start();
+    }
+    private void finalizarTurno(){
+        turnoActivo = false;
+        if(hiloGenerador !=null){
+            hiloGenerador.interrupt();
+        }
+        
+        btnCambiarDeEstado.setEnabled(false);
+        btnCancelarPedido.setEnabled(false);
+        javax.swing.SwingUtilities.invokeLater(()->{
+            marcarPedidosNoEntregados();
+            mostrarEstadisticas();
+        });
+    }
+    private void mostrarEstadisticas(){
+        int entregados =0;
+        int cancelados =0;
+        int noEntregados =0;
+        
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            String estado = jTable1.getValueAt(i, 1).toString();
+            switch (estado){
+                case "ENTREGADA":
+                    entregados++;
+                    break;
+                case "CANCELADA":
+                    cancelados++;
+                    break;
+                case "NO_ENTREGADO":
+                    noEntregados++;
+                    break;
+            }
+        }
+        String mensaje = "RESULTADOS DEL TURNO \n\n"
+                +"Pedidos Entregados: "+entregados +"\n"
+                +"Pedidos Cancelados: "+cancelados +"\n"
+                +"Pedidos No Entregados: "+noEntregados;
+        JOptionPane.showMessageDialog(this, mensaje);
+        volverAVistaJugador();
+    }
+    
+    private void volverAVistaJugador(){
+        VistaJugador vista = new VistaJugador(nombreJugador);
+        vista.setVisible(true);
+        this.dispose();
+    }
+    private void marcarPedidosNoEntregados(){
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            String estado = jTable1.getValueAt(i, 1).toString();
+            
+            if(!estado.equals("ENTREGADA")
+                && !estado.equals("CANCELADA")
+                && !estado.equals("NO_ENTREGADO")){
+                jTable1.setValueAt("NO_ENTREGADO", i, 1);
+                jTable1.setValueAt(0, i, 2);
+                 puntos-=50;
+            }
+            actualizarPuntos();
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiarDeEstado;
     private javax.swing.JButton btnCancelarPedido;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelNivel;
+    private javax.swing.JLabel labelNombreJugador;
+    private javax.swing.JLabel labelPuntos;
+    private javax.swing.JLabel labelTiempoDeTurno;
     // End of variables declaration//GEN-END:variables
 }

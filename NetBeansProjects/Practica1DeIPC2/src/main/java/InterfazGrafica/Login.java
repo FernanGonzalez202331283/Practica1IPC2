@@ -4,6 +4,7 @@
  */
 package InterfazGrafica;
 
+import LogicaDelJuego.VistaDePartida;
 import conexion.DBConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author fernan
  */
 public class Login extends javax.swing.JFrame {
-    
+    private String nombreJugador;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
     /**
@@ -135,16 +136,20 @@ public class Login extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(this, "Bienvenido "+ usuario);
                  
                  if(rol.equals("JUGADOR")){
-                     new VistaJugador().setVisible(true);
+                     //vista para los jugadores
+                     VistaJugador vista = new VistaJugador(usuario);
+                     vista.setVisible(true);
                  }
                  else if(rol.equals("ADMIN")){
-                     // Vista del administador
-                     new VistaAdmin().setVisible(true);
+                     //vista para los adminstradores
+                     VistaAdmin vista = new VistaAdmin(usuario);
+                     vista.setVisible(true);
                  }else if(rol.equals("SUPERADMIN")){
-                     new VistaJugador().setVisible(true);
-                     // new VistaSuperAdmin().setVisible(true);
+                     // vista para los super administradores
+                      VistaSuperAdmin vista = new VistaSuperAdmin(usuario);
+                      vista.setVisible(true);
                  }
-                 this.dispose(); // para cerra la ventana de login
+                 this.dispose();// cerrar la ventana despues de abrir alguna otra
              }
              else{
                  JOptionPane.showMessageDialog(this, "usuario o contraseña incorrecto");
