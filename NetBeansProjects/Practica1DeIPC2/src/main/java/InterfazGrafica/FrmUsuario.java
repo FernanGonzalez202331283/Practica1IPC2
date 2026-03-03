@@ -4,6 +4,12 @@
  */
 package InterfazGrafica;
 
+import PartesLogicas.Sucursal;
+import PartesLogicas.SucursalDAO;
+import PartesLogicas.UsuarioDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author fernan
@@ -11,12 +17,13 @@ package InterfazGrafica;
 public class FrmUsuario extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmUsuario.class.getName());
-
+    private  String nombreJugador;
     /**
-     * Creates new form FrmUsuario
+     * Creates new form FrmSucursal
      */
     public FrmUsuario() {
         initComponents();
+        cargarRoles();
     }
 
     /**
@@ -28,22 +35,145 @@ public class FrmUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
+        Jpassword = new javax.swing.JPasswordField();
+        JcomboBoxRol = new javax.swing.JComboBox<>();
+        btnGuardar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        jLabel2.setText("Ingrese Nombre: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        jLabel3.setText("Ingrese Username:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        jLabel4.setText("Ingrese Contraseña:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 18)); // NOI18N
+        jLabel5.setText("Ingrese Rol:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, -1, -1));
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 330, 30));
+
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 120, 330, 30));
+
+        Jpassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JpasswordActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Jpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, 330, 30));
+
+        JcomboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        JcomboBoxRol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JcomboBoxRolActionPerformed(evt);
+            }
+        });
+        getContentPane().add(JcomboBoxRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 250, 230, 30));
+
+        btnGuardar.setText("Guardar Jugador");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 150, 40));
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 140, 40));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 560));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+    
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void JpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JpasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JpasswordActionPerformed
+
+    private void JcomboBoxRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcomboBoxRolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JcomboBoxRolActionPerformed
+    
+    private void cargarRoles(){
+        JcomboBoxRol.removeAllItems();
+        JcomboBoxRol.addItem("SUPERADMIN");
+        JcomboBoxRol.addItem("ADMIN");
+        JcomboBoxRol.addItem("JUGADOR");
+        
+    }
+    
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String username = txtUsername.getText();
+        String password = new String(Jpassword.getPassword());
+        String rol = JcomboBoxRol.getSelectedItem().toString();
+        
+        if(nombre.isEmpty() || username.isEmpty() || password.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
+            return;
+        }
+        Integer idSucursal = null;
+    UsuarioDAO dao = new UsuarioDAO();
+    dao.registrarUsuario(nombre, username, password, rol, idSucursal);
+    JOptionPane.showMessageDialog(this, "Datos listos para enviar a la BD");
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+       VistaSuperAdmin admin = new VistaSuperAdmin(nombreJugador);
+         admin.setLocationRelativeTo(null);
+         admin.setVisible(true);
+         this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> JcomboBoxRol;
+    private javax.swing.JPasswordField Jpassword;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

@@ -34,7 +34,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnCrearYModificarSucursales = new javax.swing.JButton();
         btnCrearUsuaios = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAsignarUsuarioASucursal = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -72,16 +72,16 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         });
         getContentPane().add(btnCrearUsuaios, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 380, 50));
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 204));
-        jButton3.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Asignar Usuario a  Sucursales");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAsignarUsuarioASucursal.setBackground(new java.awt.Color(204, 204, 204));
+        btnAsignarUsuarioASucursal.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnAsignarUsuarioASucursal.setForeground(new java.awt.Color(0, 0, 0));
+        btnAsignarUsuarioASucursal.setText("Asignar Usuario a  Sucursales");
+        btnAsignarUsuarioASucursal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAsignarUsuarioASucursalActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 270, 430, 50));
+        getContentPane().add(btnAsignarUsuarioASucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 270, 430, 50));
 
         jButton4.setBackground(new java.awt.Color(204, 204, 204));
         jButton4.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -124,9 +124,9 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnAsignarUsuarioASucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarUsuarioASucursalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnAsignarUsuarioASucursalActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new Login().setVisible(true);
@@ -134,22 +134,24 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnCrearYModificarSucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearYModificarSucursalesActionPerformed
-       FrmSucursal frm = new FrmSucursal();
-       frm.setLocationRelativeTo(this);
-       frm.setVisible(true);
+      VistaCreadorYModificadorDeSucursal vista = new VistaCreadorYModificadorDeSucursal();
+      vista.setLocationRelativeTo(this);
+      vista.setVisible(true);
+      this.dispose();
     }//GEN-LAST:event_btnCrearYModificarSucursalesActionPerformed
 
     private void btnCrearUsuaiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuaiosActionPerformed
         FrmUsuario frm = new FrmUsuario();
         frm.setLocationRelativeTo(this);
         frm.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCrearUsuaiosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAsignarUsuarioASucursal;
     private javax.swing.JButton btnCrearUsuaios;
     private javax.swing.JButton btnCrearYModificarSucursales;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
