@@ -5,13 +5,18 @@
 package InterfazGrafica;
 
 import PartesLogicas.Sucursal;
+import PartesLogicas.SucursalDAO;
+import PartesLogicas.Usuario;
+import PartesLogicas.UsuarioDAO;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author fernan
  */
 public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
-    
+    private String nombreJugador;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaAsignarUsuarioASucursal.class.getName());
 
     /**
@@ -19,8 +24,40 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
      */
     public VistaAsignarUsuarioASucursal() {
         initComponents();
+        setLocationRelativeTo(null);
+        cargarUsuarios();
+        cargarSucursales();
+      
     }
-
+    private void cargarUsuarios(){
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> lista = dao.obtenerUsuarioSinSucursal();
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Username");
+        modelo.addColumn("Rol");
+        
+        for(Usuario u : lista){
+            modelo.addRow(new Object[]{
+                u.getId(),
+                u.getNombre(),
+                u.getUsername(),
+                u.getRol()
+            });
+        }
+        jTable1.setModel(modelo);
+        
+    }
+    
+    private void cargarSucursales(){
+        SucursalDAO dao = new SucursalDAO();
+        List<Sucursal> lista = dao.obtenerSucursales();
+        jComboBox1.removeAllItems();
+        for(Sucursal s: lista){
+            jComboBox1.addItem(s);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,8 +71,8 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAsiganar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,9 +91,19 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
 
         jLabel1.setText("Seleccione Sucursal: ");
 
-        jButton1.setText("jButton1");
+        btnAsiganar.setText("Asiganar");
+        btnAsiganar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAsiganarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,37 +117,70 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(388, 388, 388)
-                        .addComponent(jButton1)
-                        .addGap(192, 192, 192)
-                        .addComponent(jButton2))
+                        .addComponent(btnAsiganar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(106, 106, 106)
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(431, 431, 431)
                         .addComponent(jLabel1)
-                        .addGap(73, 73, 73)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(364, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(112, 112, 112)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnAsiganar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAsiganarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsiganarActionPerformed
+       int fila = jTable1.getSelectedRow();
+       if(fila == -1){
+           javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un usuario");
+           return;
+       }
+       int idUsuario = (int) jTable1.getValueAt(fila, 0);
+       Sucursal sucursalSeleccionada =(Sucursal) jComboBox1.getSelectedItem();
+       if(sucursalSeleccionada == null){
+           javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una Sucursal");
+           return;
+       }
+       
+       int idSucursal = sucursalSeleccionada.getId();
+       
+       UsuarioDAO dao = new UsuarioDAO();
+       boolean asignado =dao.asignarUsuarioSucursal(idUsuario, idSucursal);
+       if(asignado){
+           javax.swing.JOptionPane.showMessageDialog(this, "Usuario asignado correctamente");
+           cargarUsuarios();
+       }else{
+           javax.swing.JOptionPane.showMessageDialog(this, "Error al asignar usuario a sucursal");
+       }
+    }//GEN-LAST:event_btnAsiganarActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        VistaSuperAdmin admin = new VistaSuperAdmin(nombreJugador);
+         admin.setLocationRelativeTo(null);
+         admin.setVisible(true);
+         this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAsiganar;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<Sucursal> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

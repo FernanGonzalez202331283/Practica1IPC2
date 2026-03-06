@@ -12,14 +12,18 @@ import LogicaDelJuego.VistaDePartida;
  */
 public class VistaJugador extends javax.swing.JFrame {
     private String nombreJugador;
+    private int idSucursal;
+    private int idJugador;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaJugador.class.getName());
 
     /**
      * Creates new form VistaJugador
      */
-    public VistaJugador(String nombreJugador) {
+    public VistaJugador(int idJugador, String nombreJugador, int idSucursal) {
         initComponents();
         this.nombreJugador = nombreJugador;
+        this.idSucursal= idSucursal;
+        this.idJugador = idJugador;
         labelNombreJugador.setText(nombreJugador);
         this.setLocationRelativeTo(null);
     }
@@ -80,7 +84,19 @@ public class VistaJugador extends javax.swing.JFrame {
 
     private void btnComenzarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarPartidaActionPerformed
         // TODO add your handling code here:
-        new VistaDePartida(nombreJugador).setVisible(true);
+        if(idSucursal ==0){
+            javax.swing.JOptionPane.showMessageDialog(this, "no tiene sucursal asignada");
+            return;
+        }
+        PartesLogicas.SucursalDAO dao = new PartesLogicas.SucursalDAO();
+        boolean activa = dao.estaActiva(idSucursal);
+        
+        if(!activa){
+            javax.swing.JOptionPane.showMessageDialog(this, "tu sucursal esta inactiva. no puedes jugar");
+            return;
+        }
+        new VistaDePartida(idJugador, nombreJugador, idSucursal).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnComenzarPartidaActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed

@@ -100,4 +100,26 @@ public class SucursalDAO {
             return false;
         }
     }
+    
+    public boolean estaActiva(int idSucursal){
+        try {
+            Connection con = DBConexion.getConnection();
+            String sql = "SELECT estado FROM sucursal WHERE id_sucursal = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idSucursal);
+            
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                boolean estado = rs.getBoolean("estado");
+                con.close();
+                return estado;
+            }
+            con.close();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+      
 }

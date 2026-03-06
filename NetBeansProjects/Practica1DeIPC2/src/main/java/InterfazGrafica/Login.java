@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
     private String nombreJugador;
+    private int idSucursal;
+    private int idUsuario;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
     /**
@@ -125,7 +127,7 @@ public class Login extends javax.swing.JFrame {
         
         try {
              Connection con = DBConexion.getConnection();
-             String sql = "SELECT rol FROM usuario WHERE username = ? AND password = ?";
+            String sql = "SELECT id_usuario, rol, id_sucursal FROM usuario WHERE username = ? AND password = ?";
              PreparedStatement ps = con.prepareStatement(sql);
              ps.setString(1, usuario);
              ps.setString(2, password);
@@ -133,16 +135,18 @@ public class Login extends javax.swing.JFrame {
              ResultSet rs = ps.executeQuery();
              if(rs.next()){
                  String rol = rs.getString("rol");
+                 int idSucursal = rs.getInt("id_sucursal");
+                 int idUsuario = rs.getInt("id_usuario");
                  JOptionPane.showMessageDialog(this, "Bienvenido "+ usuario);
                  
                  if(rol.equals("JUGADOR")){
                      //vista para los jugadores
-                     VistaJugador vista = new VistaJugador(usuario);
+                     VistaJugador vista = new VistaJugador(idUsuario, usuario, idSucursal);
                      vista.setVisible(true);
                  }
                  else if(rol.equals("ADMIN")){
                      //vista para los adminstradores
-                     VistaAdmin vista = new VistaAdmin(usuario);
+                     VistaAdmin vista = new VistaAdmin(usuario, idSucursal);
                      vista.setVisible(true);
                  }else if(rol.equals("SUPERADMIN")){
                      // vista para los super administradores

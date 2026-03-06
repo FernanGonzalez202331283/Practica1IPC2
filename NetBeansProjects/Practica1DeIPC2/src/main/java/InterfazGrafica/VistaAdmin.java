@@ -4,6 +4,8 @@
  */
 package InterfazGrafica;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author fernan
@@ -12,13 +14,14 @@ public class VistaAdmin extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaAdmin.class.getName());
     private String nombreJugador;
-    
+    private int idSucursal;
     /**
      * Creates new form VistaAdmin
      */
-    public VistaAdmin(String nombreJugador) {
+    public VistaAdmin(String nombreJugador, int idSucursal) {
         initComponents();
         this.nombreJugador = this.nombreJugador;
+        this.idSucursal = idSucursal;
         labelNombreJugador.setText(nombreJugador);
         this.setLocationRelativeTo(null);
     }
@@ -37,7 +40,6 @@ public class VistaAdmin extends javax.swing.JFrame {
         btnGestionarProductos = new javax.swing.JButton();
         btnConsultarEstadisticas = new javax.swing.JButton();
         btnConsultarRankingJugadores = new javax.swing.JButton();
-        btnExportarReportes = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -51,16 +53,28 @@ public class VistaAdmin extends javax.swing.JFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 220, -1));
 
         btnGestionarProductos.setText("GESTIONAR PRODUCTOS DEL MENU");
-        getContentPane().add(btnGestionarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 310, 50));
+        btnGestionarProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionarProductosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnGestionarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 310, 50));
 
         btnConsultarEstadisticas.setText("CONSULTAR ESTADISTICAS DE PARTIDAS");
-        getContentPane().add(btnConsultarEstadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 330, 50));
+        btnConsultarEstadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarEstadisticasActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnConsultarEstadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 330, 50));
 
-        btnConsultarRankingJugadores.setText("CONSULTAR EL RANKING DE JIUGADORES");
-        getContentPane().add(btnConsultarRankingJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, -1, 50));
-
-        btnExportarReportes.setText("EXPORTAR REPORTES");
-        getContentPane().add(btnExportarReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(228, 440, 210, 50));
+        btnConsultarRankingJugadores.setText("CONSULTAR EL RANKING DE JUGADORES");
+        btnConsultarRankingJugadores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarRankingJugadoresActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnConsultarRankingJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 370, -1, 50));
 
         btnSalir.setText("SALIR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -68,10 +82,10 @@ public class VistaAdmin extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 510, 100, 40));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 450, 100, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -81,10 +95,32 @@ public class VistaAdmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnGestionarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarProductosActionPerformed
+        // TODO add your handling code here:
+        VistaGestionDeProductos iniciar= new VistaGestionDeProductos(idSucursal);
+        iniciar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnGestionarProductosActionPerformed
+
+    private void btnConsultarEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarEstadisticasActionPerformed
+        new VistaEstadisticaDePartidas(idSucursal).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnConsultarEstadisticasActionPerformed
+
+    private void btnConsultarRankingJugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarRankingJugadoresActionPerformed
+        try {
+            VistaEstadisticaDeJugadores vista = new VistaEstadisticaDeJugadores(idSucursal);
+            vista.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            System.getLogger(VistaAdmin.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+       
+    }//GEN-LAST:event_btnConsultarRankingJugadoresActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultarEstadisticas;
     private javax.swing.JButton btnConsultarRankingJugadores;
-    private javax.swing.JButton btnExportarReportes;
     private javax.swing.JButton btnGestionarProductos;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;

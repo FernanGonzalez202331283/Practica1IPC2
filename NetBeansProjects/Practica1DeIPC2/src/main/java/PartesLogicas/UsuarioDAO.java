@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author fernan
  */
 public class UsuarioDAO {
-    public void registrarUsuario(String nombre, String username, String password, String rol, Integer idSucursal){
+    public boolean registrarUsuario(String nombre, String username, String password, String rol, Integer idSucursal){
         Connection con = null;
         PreparedStatement psUsuario = null;
         PreparedStatement psJugador = null;
@@ -58,17 +58,24 @@ public class UsuarioDAO {
                 psJugador.executeUpdate();
             }
             con.commit();// se confirma
-            JOptionPane.showMessageDialog(null, "usuario registrado correctamente");
+            return true;
         } catch (SQLException e) {
             try {
                 if(con !=null){
                     con.rollback();
                 }
             } catch (SQLException ex) {
-                System.out.println("Error en roll: "+ex.getMessage());
+                ex.printStackTrace();
             }
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario "+ e.getMessage());
-        } finally {
+            
+            if(e.getErrorCode()==1062){
+                JOptionPane.showMessageDialog(null, "El usuario ya existe");
+            }else{
+            JOptionPane.showMessageDialog(null, "Error al registrar usuario "+ e.getMessage());    
+            }
+            return false;
+        } 
+        finally {
             try {
                 if(rs!=null) rs.close();
                 if(psUsuario != null)psUsuario.close();
@@ -79,6 +86,7 @@ public class UsuarioDAO {
             }
         }
     }
+    
     public List <Usuario> obtenerUsuarioSinSucursal(){
         List<Usuario> lista = new ArrayList<>();
         
@@ -103,5 +111,23 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
         return lista; 
+    }
+    
+    public boolean asignarUsuarioSucursal(int idUsuario, int idSucursal){
+        try {
+            Connection con = DBConexion.getConnection();
+            String sql = "UPDATE usuario SET id_sucursal = ? WHERE id_usuario = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idSucursal);
+            ps.setInt(2, idUsuario);
+            
+            int filas = ps.executeUpdate();
+            con.close();
+            
+            return filas >0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -19,6 +19,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class VistaDePartida extends javax.swing.JFrame {
     private String nombreJugador;
+    private int idJugador;
     private Thread hiloGenerador;
     private int nivelActual = 1;
     private int puntos = 0;
@@ -26,15 +27,20 @@ public class VistaDePartida extends javax.swing.JFrame {
     private boolean turnoActivo = true;
     private final int MAX_PEDIDOS = 20;
     private java.util.Random random = new java.util.Random();
+    private int idSucursal;
     /**
      * Creates new form VistaDePartida
      */
-    public VistaDePartida(String nombreJugador) {
+    public VistaDePartida(int idJugador,String nombreJugador, int idSucursal) {
         initComponents();
         this.nombreJugador = nombreJugador;
+        this.idSucursal = idSucursal;
+        this.idJugador = idJugador;
+        
         labelNombreJugador.setText(nombreJugador);
         labelNivel.setText("Nivel: "+nivelActual);
         labelPuntos.setText("Puntos: "+puntos);
+        
         configurarTabla();
         configurarBarra();
         iniciarGeneradorPedidos();
@@ -60,18 +66,26 @@ public class VistaDePartida extends javax.swing.JFrame {
     }
 
     private void generarPedido() {
-
-        String[] productos = {"Pizza", "Taco", "Hamburguesa", "HotDog"};
-        String productoAleatorio = productos[random.nextInt(productos.length)];
-
+        PartesLogicas.ProductoDAO dao = new PartesLogicas.ProductoDAO();
+        java.util.List<PartesLogicas.Producto> productosActivos =
+                dao.obtenerProductosActivosPorSucursal(idSucursal);
+        
+        if(productosActivos.isEmpty()){
+            return;
+        }
+        
+        PartesLogicas.Producto productoAleatorio =
+                productosActivos.get(random.nextInt(productosActivos.size()));
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         int tiempoBase = obtenerTiempoSegunNivel();
         int tiempoInicial = tiempoBase;
-
-        modelo.addRow(new Object[]{productoAleatorio, "RECIBIDA", tiempoInicial});
-
-        int nuevaFila = modelo.getRowCount() - 1;
-
+        
+        modelo.addRow(new Object[]{
+            productoAleatorio.getNombre(),
+            "RECIBIDA",
+            tiempoInicial
+        });
+        int nuevaFila = modelo.getRowCount()-1;
         iniciarTiempoFila(nuevaFila);
     }
 
@@ -122,10 +136,13 @@ public class VistaDePartida extends javax.swing.JFrame {
         switch(nivelActual){
             case 1:
                 base= 60;
+                break;
             case 2:
                 base = 40;
+                break;
             case 3:
                 base = 20;
+                break;
             default:
                 base = 60;
         }
@@ -419,6 +436,7 @@ public class VistaDePartida extends javax.swing.JFrame {
         btnCancelarPedido.setEnabled(false);
         javax.swing.SwingUtilities.invokeLater(()->{
             marcarPedidosNoEntregados();
+            guardarPartida();
             mostrarEstadisticas();
         });
     }
@@ -450,7 +468,7 @@ public class VistaDePartida extends javax.swing.JFrame {
     }
     
     private void volverAVistaJugador(){
-        VistaJugador vista = new VistaJugador(nombreJugador);
+        VistaJugador vista = new VistaJugador(idJugador,nombreJugador, idSucursal);
         vista.setVisible(true);
         this.dispose();
     }
@@ -468,7 +486,13 @@ public class VistaDePartida extends javax.swing.JFrame {
             actualizarPuntos();
         }
     }
-    
+    private void guardarPartida(){
+        PartesLogicas.PartidaDAO partidaDAO = new PartesLogicas.PartidaDAO();
+        partidaDAO.guardarPartida(idJugador, idSucursal, puntos, nivelActual, pedidosEntregados);
+
+        PartesLogicas.JugadorDAO jugadorDAO = new PartesLogicas.JugadorDAO();
+        jugadorDAO.actualizarJugador(idJugador, puntos, nivelActual);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiarDeEstado;
     private javax.swing.JButton btnCancelarPedido;

@@ -31,6 +31,8 @@ CREATE TABLE jugador (
     id_jugador INT PRIMARY KEY,
     puntos INT DEFAULT 0,
     nivel INT DEFAULT 1,
+    partidas_jugadas INT DEFAULT 0,
+    mejor_puntaje INT DEFAULT 0,
     FOREIGN KEY (id_jugador) REFERENCES usuario(id_usuario)
 );
 
@@ -39,3 +41,30 @@ CREATE TABLE estadistica (
     total_partidas INT,
     total_puntos INT
 );
+
+CREATE TABLE producto(
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(100)
+);
+
+CREATE TABLE sucursal_producto (
+    id_sucursal INT,
+    id_producto INT,
+    activo BOOLEAN DEFAULT TRUE,
+    PRIMARY KEY (id_sucursal, id_producto),
+    FOREIGN KEY (id_sucursal) REFERENCES sucursal(id_sucursal),
+    FOREIGN KEY (id_producto) REFERENCES producto(id_producto)
+);
+
+CREATE TABLE partida (
+    id_partida INT AUTO_INCREMENT PRIMARY KEY,
+    id_jugador INT,
+    id_sucursal INT,
+    puntaje_total INT,
+    nivel_alcanzado INT,
+    pedidos_completados INT,
+    FOREIGN KEY(id_jugador) REFERENCES jugador(id_jugador),
+    FOREIGN KEY(id_sucursal) REFERENCES sucursal(id_sucursal)
+);
+

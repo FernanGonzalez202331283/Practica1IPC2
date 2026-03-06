@@ -3,11 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package InterfazGrafica;
-
-import PartesLogicas.Sucursal;
-import PartesLogicas.SucursalDAO;
 import PartesLogicas.UsuarioDAO;
-import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -133,7 +129,6 @@ public class FrmUsuario extends javax.swing.JFrame {
     
     private void cargarRoles(){
         JcomboBoxRol.removeAllItems();
-        JcomboBoxRol.addItem("SUPERADMIN");
         JcomboBoxRol.addItem("ADMIN");
         JcomboBoxRol.addItem("JUGADOR");
         
@@ -151,9 +146,16 @@ public class FrmUsuario extends javax.swing.JFrame {
             return;
         }
         Integer idSucursal = null;
-    UsuarioDAO dao = new UsuarioDAO();
-    dao.registrarUsuario(nombre, username, password, rol, idSucursal);
-    JOptionPane.showMessageDialog(this, "Datos listos para enviar a la BD");
+        UsuarioDAO dao = new UsuarioDAO();
+        boolean registrado = dao.registrarUsuario(nombre, username, password, rol, idSucursal);
+        
+        if(registrado){
+            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
+            txtNombre.setText("");
+            txtUsername.setText("");
+            Jpassword.setText("");
+        } 
+   
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed

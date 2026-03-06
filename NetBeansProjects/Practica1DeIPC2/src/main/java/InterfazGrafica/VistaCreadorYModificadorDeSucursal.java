@@ -7,7 +7,6 @@ package InterfazGrafica;
 import PartesLogicas.Sucursal;
 import PartesLogicas.SucursalDAO;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
