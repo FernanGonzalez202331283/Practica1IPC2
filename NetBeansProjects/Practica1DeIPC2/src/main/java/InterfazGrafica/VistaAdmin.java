@@ -45,12 +45,15 @@ public class VistaAdmin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 260, 50));
+
+        labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
+        labelNombreJugador.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 260, 50));
 
         jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("BIENVENIDO");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 220, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 220, -1));
 
         btnGestionarProductos.setText("GESTIONAR PRODUCTOS DEL MENU");
         btnGestionarProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +61,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                 btnGestionarProductosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnGestionarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 310, 50));
+        getContentPane().add(btnGestionarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, 340, 50));
 
         btnConsultarEstadisticas.setText("CONSULTAR ESTADISTICAS DE PARTIDAS");
         btnConsultarEstadisticas.addActionListener(new java.awt.event.ActionListener() {
@@ -66,7 +69,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                 btnConsultarEstadisticasActionPerformed(evt);
             }
         });
-        getContentPane().add(btnConsultarEstadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 330, 50));
+        getContentPane().add(btnConsultarEstadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 340, 50));
 
         btnConsultarRankingJugadores.setText("CONSULTAR EL RANKING DE JUGADORES");
         btnConsultarRankingJugadores.addActionListener(new java.awt.event.ActionListener() {
@@ -74,7 +77,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                 btnConsultarRankingJugadoresActionPerformed(evt);
             }
         });
-        getContentPane().add(btnConsultarRankingJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 370, -1, 50));
+        getContentPane().add(btnConsultarRankingJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 370, 340, 50));
 
         btnSalir.setText("SALIR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -82,7 +85,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 450, 100, 40));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 470, 100, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 640));

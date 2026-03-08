@@ -60,6 +60,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -77,7 +78,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaProductos);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 620, 550));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 730, 550));
 
         btnCrearProducto.setText("Crear");
         btnCrearProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +86,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
                 btnCrearProductoActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCrearProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 710, 100, 40));
+        getContentPane().add(btnCrearProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 700, 100, 40));
 
         btnProducto.setText("Modificar Producto");
         btnProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +94,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
                 btnProductoActionPerformed(evt);
             }
         });
-        getContentPane().add(btnProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 710, -1, 40));
+        getContentPane().add(btnProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 700, -1, 40));
 
         btnDesactivarProductos.setText("Activar / Desactivar");
         btnDesactivarProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +102,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
                 btnDesactivarProductosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDesactivarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 710, 160, 40));
+        getContentPane().add(btnDesactivarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 700, 160, 40));
 
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -109,12 +110,17 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
                 btnRegresarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 710, 100, 40));
+        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 700, 100, 40));
 
-        jLabel1.setText("GESTION DE PRODUCTOS");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("GESTION DE PRODUCTOS DEL MENU");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 830, -1, -1));
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 690, -1, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada (2).png"))); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1030, 830));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -186,6 +192,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaProductos;
     // End of variables declaration//GEN-END:variables

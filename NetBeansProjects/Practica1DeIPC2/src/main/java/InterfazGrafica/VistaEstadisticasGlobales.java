@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class VistaEstadisticasGlobales extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaEstadisticasGlobales.class.getName());
-
+    private String nombreJugador;
     /**
      * Creates new form VistaEstadisticasGlobales
      */
@@ -38,38 +38,48 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
         labelPromedioPuntos = new javax.swing.JLabel();
         labelMejorPuntaje = new javax.swing.JLabel();
         labelTotalPedidos = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(386, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelMejorPuntaje, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelPromedioPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTotalPartidas, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTotalPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(270, 270, 270))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(labelTotalPartidas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
-                .addComponent(labelPromedioPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(labelMejorPuntaje, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addComponent(labelTotalPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(247, Short.MAX_VALUE))
-        );
+        labelTotalPartidas.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(labelTotalPartidas, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 190, 46));
+
+        labelPromedioPuntos.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(labelPromedioPuntos, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 179, 42));
+        getContentPane().add(labelMejorPuntaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 190, 47));
+
+        labelTotalPedidos.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(labelTotalPedidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, 190, 45));
+
+        btnRegresar.setText("REGRESAR");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 500, 130, 60));
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("CONSULTAS DE ESTADISTICAS GLOBALES");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 760, 60));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada (3).png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        VistaSuperAdmin vista = new VistaSuperAdmin(nombreJugador);
+        vista.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void cargarEstadisticas() throws SQLException{
         ReportesDao dao = new ReportesDao();
@@ -92,6 +102,9 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelMejorPuntaje;
     private javax.swing.JLabel labelPromedioPuntos;
     private javax.swing.JLabel labelTotalPartidas;

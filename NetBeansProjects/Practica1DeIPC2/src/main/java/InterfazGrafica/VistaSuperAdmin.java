@@ -61,7 +61,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
                 btnCrearYModificarSucursalesActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCrearYModificarSucursales, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 430, 60));
+        getContentPane().add(btnCrearYModificarSucursales, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 430, 50));
 
         btnCrearUsuaios.setBackground(new java.awt.Color(204, 204, 204));
         btnCrearUsuaios.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -72,7 +72,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
                 btnCrearUsuaiosActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCrearUsuaios, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 380, 50));
+        getContentPane().add(btnCrearUsuaios, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 430, 50));
 
         btnAsignarUsuarioASucursal.setBackground(new java.awt.Color(204, 204, 204));
         btnAsignarUsuarioASucursal.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -94,7 +94,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
                 btnConsultarEstadisticasGlobalesActionPerformed(evt);
             }
         });
-        getContentPane().add(btnConsultarEstadisticasGlobales, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, -1, 50));
+        getContentPane().add(btnConsultarEstadisticasGlobales, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, -1, 50));
 
         btnVisualizarRankingGeneral.setBackground(new java.awt.Color(204, 204, 204));
         btnVisualizarRankingGeneral.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -105,7 +105,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
                 btnVisualizarRankingGeneralActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVisualizarRankingGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 420, -1, 50));
+        getContentPane().add(btnVisualizarRankingGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 410, 610, 50));
 
         jButton6.setBackground(new java.awt.Color(204, 204, 204));
         jButton6.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -122,9 +122,10 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 570, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 570, -1, -1));
 
-        labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        labelNombreJugador.setBackground(new java.awt.Color(0, 0, 0));
+        labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
         labelNombreJugador.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 340, 40));
 
@@ -132,7 +133,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 850, 640));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 870, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -153,7 +153,7 @@ public class VistaDePartida extends javax.swing.JFrame {
     private void configurarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new Object[][]{},
-                new String[]{"Producto", "Estado", "Tiempo"}
+                new String[]{"Pedido", "Estado", "Tiempo"}
         ) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -261,7 +261,7 @@ public class VistaDePartida extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Producto", "Estado", "Tiempo"
+                "Pedido", "Estado", "Tiempo"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -277,7 +277,7 @@ public class VistaDePartida extends javax.swing.JFrame {
                 btnCambiarDeEstadoActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCambiarDeEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 230, -1));
+        jPanel3.add(btnCambiarDeEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, 230, -1));
 
         btnCancelarPedido.setBackground(new java.awt.Color(204, 204, 204));
         btnCancelarPedido.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
@@ -288,7 +288,7 @@ public class VistaDePartida extends javax.swing.JFrame {
                 btnCancelarPedidoActionPerformed(evt);
             }
         });
-        jPanel3.add(btnCancelarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, -1, -1));
+        jPanel3.add(btnCancelarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 60, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
