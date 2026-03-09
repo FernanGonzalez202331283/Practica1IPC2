@@ -40,7 +40,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         btnConsultarEstadisticasGlobales = new javax.swing.JButton();
         btnVisualizarRankingGeneral = new javax.swing.JButton();
         btnAdministrarParametrosGenerales = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
         labelNombreJugador = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -118,16 +118,16 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         });
         getContentPane().add(btnAdministrarParametrosGenerales, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 490, -1, 50));
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 204));
-        jButton1.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Cerrar Sesion");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrarSesion.setBackground(new java.awt.Color(204, 204, 204));
+        btnCerrarSesion.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(0, 0, 0));
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCerrarSesionActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 570, -1, -1));
+        getContentPane().add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 570, -1, -1));
 
         labelNombreJugador.setBackground(new java.awt.Color(0, 0, 0));
         labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
@@ -149,10 +149,10 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAsignarUsuarioASucursalActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         new Login().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnCrearYModificarSucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearYModificarSucursalesActionPerformed
       VistaCreadorYModificadorDeSucursal vista = new VistaCreadorYModificadorDeSucursal();
@@ -198,11 +198,11 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdministrarParametrosGenerales;
     private javax.swing.JButton btnAsignarUsuarioASucursal;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnConsultarEstadisticasGlobales;
     private javax.swing.JButton btnCrearUsuaios;
     private javax.swing.JButton btnCrearYModificarSucursales;
     private javax.swing.JButton btnVisualizarRankingGeneral;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelNombreJugador;

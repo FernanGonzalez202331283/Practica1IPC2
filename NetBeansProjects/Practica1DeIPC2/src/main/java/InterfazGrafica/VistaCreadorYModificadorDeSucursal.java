@@ -25,16 +25,19 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
         cargarTabla();
         this.setLocationRelativeTo(null);
     }
-
+    
+    // carga todas las sucursales registradas en la tabla
     private void cargarTabla(){
         SucursalDAO dao = new SucursalDAO();
         List<Sucursal> lista = dao.obtenerSucursales();
+        //crea el modelo de la tabla
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Direccion");
         modelo.addColumn("Estado");
         
+        //agrega  cada sucursal como una fila en la tabla
         for(Sucursal s: lista){
             modelo.addRow(new Object[]{
                 s.getId(),
@@ -43,6 +46,7 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
                 s.isEstado() ? "Activa": "Inactiva"
             });
         }
+        // asigna el modelo a la tabla
         tblSucursales.setModel(modelo);
         
     }
@@ -153,13 +157,15 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
         String nombre = txtNombre.getText();
         String Direccion = txtDireccion.getText();
         
+        //  verifica que el nombre de la sucursal no este vacio 
         if(nombre.isEmpty()){
             javax.swing.JOptionPane.showMessageDialog(this, "El Nombre es Obligatorio");
             return;
         }
+        
         SucursalDAO dao = new SucursalDAO();
         boolean creado = dao.crearSucursal(nombre, Direccion);
-        
+        // si se crea correctamente se actualiza la tabla
         if(creado){
             javax.swing.JOptionPane.showMessageDialog(this, "Succursal creada");
             cargarTabla();
@@ -171,17 +177,20 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
 
     private void btnModificarSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarSucursalActionPerformed
         // TODO add your handling code here:
+        // obtiene la fila seleccionada  en cada tabla
         int fila = tblSucursales.getSelectedRow();
         
         if(fila == -1){
-            javax.swing.JOptionPane.showMessageDialog(this, "Selecciona una Sucursal´t");
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecciona una Sucursal");
             return;
         }
+        // obtiene los datos de la sucursal seleccionada
         int id = (int) tblSucursales.getValueAt(fila, 0);
         String nombre = txtNombre.getText();
         String direccion = txtDireccion.getText();
         boolean estado = checkEstado.isSelected();
         
+        // se llama la DAO para modificar la sucursal
         SucursalDAO dao = new SucursalDAO();
         boolean modificado = dao.modificarSucursal(id, nombre, direccion, estado);
         
@@ -200,6 +209,7 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
         txtNombre.setText(tblSucursales.getValueAt(fila, 1).toString());
         txtDireccion.setText(tblSucursales.getValueAt(fila, 2).toString());
         
+        // convierte el estado del texto a booleano segun el checkEstado
         String estadoTexto = tblSucursales.getValueAt(fila, 3).toString();
         checkEstado.setSelected(estadoTexto.equals("Activa"));
     }//GEN-LAST:event_tblSucursalesMouseClicked
@@ -215,6 +225,7 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
          this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
  
+    // limpia los campos
     private void limpiarCampos(){
         txtNombre.setText("");
         txtDireccion.setText("");

@@ -22,24 +22,30 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
         cargarProductos();
         this.setLocationRelativeTo(null);
     }
+    
+    // carga toodos los productos dle menu de la sucursal en la tabla
     private void cargarProductos(){
+        //obtiene productos desde la base de datos usando el Dao
         PartesLogicas.ProductoDAO dao = new PartesLogicas.ProductoDAO();
         java.util.List<PartesLogicas.Producto> lista = dao.obtenerProductosPorSucursal(idSucursal);
+        // crea el modelo de la tabla
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
-        
+        // define las columnas de la tabla
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Descripcion");
         modelo.addColumn("Activo");
         
+        // agrega cada producto como una fila en la tabla
         for(PartesLogicas.Producto p : lista){
             modelo.addRow(new Object[]{
                 p.getId(),
                 p.getNombre(),
                 p.getDescripcion(),
-                p.isActivo() ? "Activo":"Desactivado"
+                p.isActivo() ? "Activo":"Desactivado" // convierte el estado booleano a texto
             });
         }
+        // asigna el modelo a la tabla
         tablaProductos.setModel(modelo);
     }
     /**
@@ -127,14 +133,17 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
 
     private void btnCrearProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProductoActionPerformed
         // TODO add your handling code here:
+        // solicita el nombre del producto
         String nombre = javax.swing.JOptionPane.showInputDialog(this, "Nombre del producto: ");
+        // verifica que el nombre no este vacio
         if(nombre == null || nombre.trim().isEmpty())return;
         
         String descripcion = javax.swing.JOptionPane.showInputDialog(this, "Descripcion: ");
         if(descripcion == null) descripcion = "";
         
         PartesLogicas.ProductoDAO dao = new PartesLogicas.ProductoDAO();
-        dao.crearProductos(nombre, descripcion, idSucursal);
+        dao.crearProductos(nombre, descripcion, idSucursal); // crea el producto en la base de datos
+        // recarga la tabla para mostrar el nuevo producto
         cargarProductos();
     }//GEN-LAST:event_btnCrearProductoActionPerformed
 
@@ -145,6 +154,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un producto");
             return;
         }
+        // obtiene el estado actual del producto
         int idProducto = (int) tablaProductos.getValueAt(fila, 0);
         
         String nuevoNombre = javax.swing.JOptionPane.showInputDialog(this, "Nuevo nombre: ");
@@ -173,7 +183,7 @@ public class VistaGestionDeProductos extends javax.swing.JFrame {
         boolean activoActual = estadoTexto.equals("Activo");
         PartesLogicas.ProductoDAO dao = new PartesLogicas.ProductoDAO();
         
-        // se invierte el estado
+        // cambia el estado del producto ya sea activo o desactivado
         dao.cambiarEstadoDeProducto(idSucursal, idProducto, !activoActual);
         cargarProductos();
     }//GEN-LAST:event_btnDesactivarProductosActionPerformed

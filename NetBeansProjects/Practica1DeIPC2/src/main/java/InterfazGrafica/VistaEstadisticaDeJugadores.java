@@ -29,25 +29,30 @@ public class VistaEstadisticaDeJugadores extends javax.swing.JFrame {
         initComponents();
         this.idSucursal = idSucursal;
         cargarRanking();
-        
+        this.setLocationRelativeTo(null);
     }
     
     private void cargarRanking() throws SQLException{
+        //obtiene el modelo de la base de datos de la tabla para poder modificar sus filas
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0);
+        modelo.setRowCount(0); // limpia todas las filas de la tabla antes de cargar nuevos datos 
         
+        //consulta la base de datos 
         PartesLogicas.ReportesDao dao = new PartesLogicas.ReportesDao();
         ResultSet rs = dao.obtenerRankingSucursal(idSucursal);
         
         int posicion = 1;
         try {
-            while(rs.next()){
+            // se reccore cada registro obtenido de la base de datos
+            while(rs.next()){ 
+                //recolecta los datos de caja jugador desde ResultSet
                 String nombre = rs.getString("nombre");
                 int puntos = rs.getInt("puntos");
                 int nivel = rs.getInt("nivel");
                 int partidas = rs.getInt("partidas_jugadas");
                 int mejor = rs.getInt("mejor_puntaje");
                 
+                // agrega una nueva fila a la tabla con la informacion  de cada jugador
                 modelo.addRow(new Object[]{
                     nombre,
                     puntos,
@@ -135,6 +140,7 @@ public class VistaEstadisticaDeJugadores extends javax.swing.JFrame {
     
     private void exportarCSV(){
         try {
+            // para que el usuario eliga donde guardar su archivo
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Guardar reporte CSV");
             
@@ -148,7 +154,7 @@ public class VistaEstadisticaDeJugadores extends javax.swing.JFrame {
                 
                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                 
-                // escribir los encabezados
+                // escribir los nombres como encabezados del archivo
                 for (int i = 0; i < modelo.getColumnCount(); i++) {
                     bw.write(modelo.getColumnName(i));
                     if(i< modelo.getColumnCount()-1){
@@ -158,7 +164,7 @@ public class VistaEstadisticaDeJugadores extends javax.swing.JFrame {
                 
                 bw.newLine();
                 
-                // escribir las filas 
+                // Recorre todas las filas de la tabla para exportar los datos
                 for (int i = 0; i < modelo.getRowCount(); i++) {
                     for (int j = 0; j < modelo.getColumnCount(); j++) {
                         bw.write(modelo.getValueAt(i, j).toString());
@@ -174,7 +180,10 @@ public class VistaEstadisticaDeJugadores extends javax.swing.JFrame {
             }
         
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe("Error al cargar ranking: " + e.getMessage());
+
+             JOptionPane.showMessageDialog(this,
+                "Error al cargar el ranking de jugadores");
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

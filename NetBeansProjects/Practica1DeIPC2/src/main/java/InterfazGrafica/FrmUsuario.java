@@ -173,7 +173,8 @@ public class FrmUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-       VistaSuperAdmin admin = new VistaSuperAdmin(nombreJugador);
+       // regresa a la vista principal de SuperAdministrador
+        VistaSuperAdmin admin = new VistaSuperAdmin(nombreJugador);
          admin.setLocationRelativeTo(null);
          admin.setVisible(true);
          this.dispose();

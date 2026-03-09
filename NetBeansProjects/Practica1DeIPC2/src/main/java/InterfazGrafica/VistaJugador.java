@@ -21,6 +21,7 @@ public class VistaJugador extends javax.swing.JFrame {
      */
     public VistaJugador(int idJugador, String nombreJugador, int idSucursal) {
         initComponents();
+        // guarda los tados del jugador
         this.nombreJugador = nombreJugador;
         this.idSucursal= idSucursal;
         this.idJugador = idJugador;
@@ -83,18 +84,20 @@ public class VistaJugador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnComenzarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarPartidaActionPerformed
-        // TODO add your handling code here:
+        // Verifica que el jugador tenga una sucursal asignada
         if(idSucursal ==0){
             javax.swing.JOptionPane.showMessageDialog(this, "no tiene sucursal asignada");
             return;
         }
+        // consulta si la sucursal esta activa
         PartesLogicas.SucursalDAO dao = new PartesLogicas.SucursalDAO();
         boolean activa = dao.estaActiva(idSucursal);
-        
+        // si la sucursal esta inactiva no se puede iniciar una partida
         if(!activa){
             javax.swing.JOptionPane.showMessageDialog(this, "tu sucursal esta inactiva. no puedes jugar");
             return;
         }
+        // abre la ventana de la partida
         new VistaDePartida(idJugador, nombreJugador, idSucursal).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnComenzarPartidaActionPerformed

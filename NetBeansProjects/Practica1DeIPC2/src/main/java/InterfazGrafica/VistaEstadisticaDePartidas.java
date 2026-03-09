@@ -31,14 +31,18 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         cargarTabla();
     }
-    private void cargarTabla(){
+    private void cargarTabla(){ 
+        // obtiene el modelo de la tabla para poder modificar sus filas
         DefaultTableModel modelo = (DefaultTableModel) tablaPartidas.getModel();
         modelo.setRowCount(0); // limpia la tabla
         
+        // crea el daop para obtener los reportesá
         ReportesDao dao = new ReportesDao();
         
         try {
+            // ejecuta la consulta para obtener las partidas de la sucursal
             ResultSet rs = dao.obtenerPartidasSucursal(idSucursal);
+            // recorre los resultados obtenidos de la base de datos
             while(rs.next()){
                 Object[] fila = {
                     rs.getString("nombre"),
@@ -46,11 +50,15 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
                     rs.getInt("nivel_alcanzado"),
                     rs.getInt("pedidos_completados")
                 };
+                // agrega la fila a la tabla
                 modelo.addRow(fila);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
+            logger.severe("Error al cargar estadísticas de partidas: " + e.getMessage());
+
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar las estadísticas de partidas");
+            }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -105,7 +113,7 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada (2).png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 730));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -119,6 +127,7 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
       
     private void exportarCSV(){
         try {
+            // permite al usuario elegir donde guardar el archivo
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Guardar reporte CSV");
             
@@ -129,10 +138,10 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
                 
                 FileWriter fw = new FileWriter(archivo + ".csv");
                 BufferedWriter bw = new BufferedWriter(fw);
-                
+                // obtiene el modelo de la tabla
                 DefaultTableModel modelo = (DefaultTableModel) tablaPartidas.getModel();
                 
-                // escribir los encabezados
+                // escribir los encabezados de la tabla
                 for (int i = 0; i < modelo.getColumnCount(); i++) {
                     bw.write(modelo.getColumnName(i));
                     if(i< modelo.getColumnCount()-1){
@@ -142,7 +151,7 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
                 
                 bw.newLine();
                 
-                // escribir las filas 
+                // recorre todas las filas para exportar los datos
                 for (int i = 0; i < modelo.getRowCount(); i++) {
                     for (int j = 0; j < modelo.getColumnCount(); j++) {
                         bw.write(modelo.getValueAt(i, j).toString());
@@ -158,8 +167,12 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
             }
         
         } catch (Exception e) {
-            e.printStackTrace();
-        }
+           
+            logger.severe("Error al exportar CSV: " + e.getMessage());
+
+            JOptionPane.showMessageDialog(this,
+                    "Error al exportar el reporte");
+                }
     }
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         // TODO add your handling code here:

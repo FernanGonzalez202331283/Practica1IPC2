@@ -49,6 +49,7 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
         comboboxNivel2 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         comboBoxNivel3 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -105,36 +106,40 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
 
         comboBoxNivel3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         getContentPane().add(comboBoxNivel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 650, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 820));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    // cargar los paramteros de la sucursal seleccionada
     private void cargarParametros(){
-
+        // obtiene la fila seleccionada en la tabla
         int fila = jTable1.getSelectedRow();
 
         if(fila == -1){
             return;
         }
-
+        // obtiene los tiemos de cada nivel desde la tabla
         int t1 = Integer.parseInt(jTable1.getValueAt(fila,1).toString());
         int t2 = Integer.parseInt(jTable1.getValueAt(fila,2).toString());
         int t3 = Integer.parseInt(jTable1.getValueAt(fila,3).toString());
-
+        // muestra los valores en el comboBox
         comboBoxNivel1.setSelectedItem(String.valueOf(t1));
         comboboxNivel2.setSelectedItem(String.valueOf(t2));
         comboBoxNivel3.setSelectedItem(String.valueOf(t3));
     }
     private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
+        // obtiene la fila seleccionada
         int fila = jTable1.getSelectedRow();
         
+        // verifica que se haya seleccionado una sucursal
         if(fila == -1){
             JOptionPane.showMessageDialog(this, "Seeccione una sucursal");
             return;
         }
         
         String nombreSucursal = jTable1.getValueAt(fila, 0).toString();
-        
+        // obtiene los valores seleccionados en el combobox
         int t1 = Integer.parseInt(comboBoxNivel1.getSelectedItem().toString());
         int t2 = Integer.parseInt(comboboxNivel2.getSelectedItem().toString());
         int t3 = Integer.parseInt(comboBoxNivel3.getSelectedItem().toString());
@@ -142,6 +147,7 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
         PartesLogicas.SucursalDAO daoSucursal = new PartesLogicas.SucursalDAO();
         int idSucursal = daoSucursal.obtenerIdPorNombre(nombreSucursal);
         
+        // obtiene el id de la sucursal 
         ParametrosJuegoDAO daoParametros = new ParametrosJuegoDAO();
         daoParametros.guardarOActualizarParametros(idSucursal,t1,t2,t3);
         JOptionPane.showMessageDialog(this, "Parametros Guardados");
@@ -162,9 +168,9 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
         comboBoxNivel1.removeAllItems();
         comboboxNivel2.removeAllItems();
         comboBoxNivel3.removeAllItems();
-        
+        // tiempos disponivles para cada nivel del juego
         int[] tiempos = {10,15,20,25,30,35,40,45,50,60};
-
+        // agrega cada tiempo a los combobox
         for(int t : tiempos){
             comboBoxNivel1.addItem(String.valueOf(t));
             comboboxNivel2.addItem(String.valueOf(t));
@@ -173,7 +179,7 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
     }
     private void cargarSucursales(){
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0);
+        modelo.setRowCount(0); // limpia la tabla antes de cargar nuevos datos
         
         PartesLogicas.SucursalDAO daoSucursal = new PartesLogicas.SucursalDAO();
         java.util.List<PartesLogicas.Sucursal> lista = daoSucursal.obtenerSucursales();
@@ -182,7 +188,7 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
         
         for(PartesLogicas.Sucursal s : lista){
             ParametrosJuego p =daoParametros.obtenerParametros(s.getId());
-            
+            // agrega cada sucursal y sus parametros a la tabla
             modelo.addRow(new Object[]{
                 s.getNombre(),
                 p.getTiempoNivel1(),
@@ -203,6 +209,7 @@ public class VistaModificarParametrosGenerales extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables

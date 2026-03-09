@@ -114,7 +114,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreUsuarioActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // TODO add your handling code here:
+        // obtiene los datos ingresados por el usuario en los campos
         String usuario = txtNombreUsuario.getText();
         String password = String.valueOf(txtPassword.getPassword());
         
@@ -124,14 +124,20 @@ public class Login extends javax.swing.JFrame {
         }
         
         try {
+            // estblece la conexion con la base de datos
              Connection con = DBConexion.getConnection();
-            String sql = "SELECT id_usuario, rol, id_sucursal FROM usuario WHERE username = ? AND password = ?";
-             PreparedStatement ps = con.prepareStatement(sql);
+             
+             //consulta a MySl para verificar si el usuario y contraseña existen en la base de datos
+             String sql = "SELECT id_usuario, rol, id_sucursal FROM usuario WHERE username = ? AND password = ?";
+             PreparedStatement ps = con.prepareStatement(sql); // prepara la culsuta y asigna los valores asignados
              ps.setString(1, usuario);
              ps.setString(2, password);
              
+             // ejecuta la consulta en la base de datos
              ResultSet rs = ps.executeQuery();
+             // si encuentra al usuario en  la base de datos
              if(rs.next()){
+                 // se obtienen el rol y los datos del usuario 
                  String rol = rs.getString("rol");
                  int idSucursal = rs.getInt("id_sucursal");
                  int idUsuario = rs.getInt("id_usuario");

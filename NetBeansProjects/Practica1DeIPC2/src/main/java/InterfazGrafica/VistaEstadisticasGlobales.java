@@ -7,6 +7,7 @@ package InterfazGrafica;
 import PartesLogicas.ReportesDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -80,13 +81,16 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
         vista.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
-
+    
+    //obtiene las estadisticas globales del sistema desde la base de datos
     private void cargarEstadisticas() throws SQLException{
+        // crea el objeto dao para realizar la consulta
         ReportesDao dao = new ReportesDao();
+        //  ejecuta consulta que devuelve las estadisticas globales
         ResultSet rs = dao.obtenerEstadisticasGlobales();
         
         try {
-
+        // verifica si se obtuvo almenos un resultado
         if(rs.next()){
 
             labelTotalPartidas.setText("Total partidas: " + rs.getInt("total_partidas"));
@@ -98,7 +102,7 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
             labelTotalPedidos.setText("Pedidos entregados: " + rs.getInt("total_pedidos"));
         }
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar estadísticas");
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

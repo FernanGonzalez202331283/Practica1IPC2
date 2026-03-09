@@ -29,15 +29,18 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
         cargarSucursales();
       
     }
+    // carga en la tabla los usuario que no tienen sucursal
     private void cargarUsuarios(){
+        // obtiene los usuarios sin sucursal desde la base de datos 
         UsuarioDAO dao = new UsuarioDAO();
         List<Usuario> lista = dao.obtenerUsuarioSinSucursal();
+        // modeo de la tabla y define las columnas de la tabla
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Username");
         modelo.addColumn("Rol");
-        
+        // agrega cada usuario como fila en la tabla
         for(Usuario u : lista){
             modelo.addRow(new Object[]{
                 u.getId(),
@@ -46,13 +49,17 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
                 u.getRol()
             });
         }
+        // asigna el modeloa la tabla
         jTable1.setModel(modelo);
         
     }
     
+    // carga las sucursales dispobibles en el comboBox
     private void cargarSucursales(){
+        // se obtiene la lista de la sucursal desde la base de datos
         SucursalDAO dao = new SucursalDAO();
         List<Sucursal> lista = dao.obtenerSucursales();
+        // limpia el comboBox antes de cargar las nuevas sucursales
         jComboBox1.removeAllItems();
         for(Sucursal s: lista){
             jComboBox1.addItem(s);
@@ -129,28 +136,38 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAsiganarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsiganarActionPerformed
-       int fila = jTable1.getSelectedRow();
-       if(fila == -1){
-           javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un usuario");
-           return;
-       }
-       int idUsuario = (int) jTable1.getValueAt(fila, 0);
-       Sucursal sucursalSeleccionada =(Sucursal) jComboBox1.getSelectedItem();
-       if(sucursalSeleccionada == null){
-           javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una Sucursal");
-           return;
-       }
-       
-       int idSucursal = sucursalSeleccionada.getId();
-       
-       UsuarioDAO dao = new UsuarioDAO();
-       boolean asignado =dao.asignarUsuarioSucursal(idUsuario, idSucursal);
-       if(asignado){
-           javax.swing.JOptionPane.showMessageDialog(this, "Usuario asignado correctamente");
-           cargarUsuarios();
-       }else{
-           javax.swing.JOptionPane.showMessageDialog(this, "Error al asignar usuario a sucursal");
-       }
+          
+        try {  
+            // obtiene la fila seleccionada en la tabla
+            int fila = jTable1.getSelectedRow();
+            //verifica que se haya seleccionado un usuario
+            if(fila == -1){
+                javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un usuario");
+                return;
+            }
+            // obtiene el id del usuario seleccionado
+            int idUsuario = (int) jTable1.getValueAt(fila, 0);
+            Sucursal sucursalSeleccionada =(Sucursal) jComboBox1.getSelectedItem();
+            if(sucursalSeleccionada == null){
+                javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una Sucursal");
+                return;
+            }
+
+            int idSucursal = sucursalSeleccionada.getId();
+
+            UsuarioDAO dao = new UsuarioDAO();
+            boolean asignado =dao.asignarUsuarioSucursal(idUsuario, idSucursal);
+            if(asignado){
+                javax.swing.JOptionPane.showMessageDialog(this, "Usuario asignado correctamente");
+                cargarUsuarios();
+            }else{
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al asignar usuario a sucursal");
+            }
+        } catch(Exception e){
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error al asignar usuario: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnAsiganarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed

@@ -18,6 +18,7 @@ public class VistaAdmin extends javax.swing.JFrame {
     /**
      * Creates new form VistaAdmin
      */
+    
     public VistaAdmin(String nombreJugador, int idSucursal) {
         initComponents();
         this.nombreJugador = nombreJugador;
@@ -46,6 +47,7 @@ public class VistaAdmin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        labelNombreJugador.setBackground(new java.awt.Color(255, 255, 255));
         labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
         labelNombreJugador.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 260, 50));

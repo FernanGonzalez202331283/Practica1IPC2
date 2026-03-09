@@ -86,8 +86,8 @@ public class VistaRankingGeneralDeJugadores extends javax.swing.JFrame {
 
     private void cargarRanking() throws SQLException{
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0);
-        
+        modelo.setRowCount(0);// limpia la tabla antes
+        // obtiene la consulta de el ranking de los jugadores 
         ReportesDao dao = new ReportesDao();
         ResultSet rs = dao.obtenerRankinGlobal();
         
@@ -106,7 +106,11 @@ public class VistaRankingGeneralDeJugadores extends javax.swing.JFrame {
                 posicion++;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           
+        logger.severe("Error al cargar ranking general: " + e.getMessage());
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Error al cargar el ranking general de jugadores");
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
