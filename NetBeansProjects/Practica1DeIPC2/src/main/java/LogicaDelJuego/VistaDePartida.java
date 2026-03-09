@@ -381,7 +381,7 @@ public class VistaDePartida extends javax.swing.JFrame {
         nivelActual++;
         labelNivel.setText("Nivel: " + nivelActual);
         JOptionPane.showMessageDialog(this, "Subiste de nivel, ahora tu nivel es "+nivelActual+
-                "ahora los pedidos tendran menos tiempo");
+                " ahora los pedidos tendran menos tiempo");
         puntos+=200;
         actualizarPuntos();
     }
@@ -411,7 +411,7 @@ public class VistaDePartida extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarPedidoActionPerformed
    
     private void aplicarEventoAlBoton(){
-        int tiempoRandom = 2000 + random.nextInt(3000);
+        int tiempoRandom = 2000 + random.nextInt(1000);
         btnCambiarDeEstado.setEnabled(false);
         
          new Thread(() -> {
