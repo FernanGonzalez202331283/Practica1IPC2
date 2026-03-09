@@ -121,5 +121,23 @@ public class SucursalDAO {
             return false;
         }
     }
+    
+    public int obtenerIdPorNombre(String nombre){
+        int id = -1;
+        String sql = "SELECT id_sucursal FROM sucursal WHERE nombre = ?";
+        
+        try (Connection con = DBConexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, nombre);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                id = rs.getInt("id_sucursal");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
       
 }

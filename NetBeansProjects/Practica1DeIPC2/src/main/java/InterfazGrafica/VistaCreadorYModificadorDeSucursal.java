@@ -23,6 +23,7 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
     public VistaCreadorYModificadorDeSucursal() {
         initComponents();
         cargarTabla();
+        this.setLocationRelativeTo(null);
     }
 
     private void cargarTabla(){
@@ -134,7 +135,7 @@ public class VistaCreadorYModificadorDeSucursal extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 690, 150, 52));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 690, 150, 52));
 
         jLabel4.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));

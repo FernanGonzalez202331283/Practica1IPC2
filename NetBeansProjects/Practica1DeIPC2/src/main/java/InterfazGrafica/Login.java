@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package InterfazGrafica;
-
-import LogicaDelJuego.VistaDePartida;
 import conexion.DBConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -5,6 +5,8 @@
 package LogicaDelJuego;
 
 import InterfazGrafica.VistaJugador;
+import PartesLogicas.ParametrosJuego;
+import PartesLogicas.ParametrosJuegoDAO;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JOptionPane;
@@ -28,6 +30,7 @@ public class VistaDePartida extends javax.swing.JFrame {
     private final int MAX_PEDIDOS = 20;
     private java.util.Random random = new java.util.Random();
     private int idSucursal;
+    private ParametrosJuego parametros;
     /**
      * Creates new form VistaDePartida
      */
@@ -41,6 +44,9 @@ public class VistaDePartida extends javax.swing.JFrame {
         labelNivel.setText("Nivel: "+nivelActual);
         labelPuntos.setText("Puntos: "+puntos);
         
+        ParametrosJuegoDAO dao = new ParametrosJuegoDAO();
+        parametros = dao.obtenerParametros(idSucursal);
+        
         configurarTabla();
         configurarBarra();
         iniciarGeneradorPedidos();
@@ -51,7 +57,7 @@ public class VistaDePartida extends javax.swing.JFrame {
         hiloGenerador = new Thread(()->{
             while(turnoActivo){
                 try {
-                    Thread.sleep(4000);
+                    Thread.sleep(parametros.getTiempoGeneracionPedidos() * 1000);
                 } catch (InterruptedException ex) {
                     break;
                 }
@@ -133,18 +139,19 @@ public class VistaDePartida extends javax.swing.JFrame {
     
     private int obtenerTiempoSegunNivel(){
         int base;
+        
         switch(nivelActual){
             case 1:
-                base= 60;
+                base = parametros.getTiempoNivel1();
                 break;
             case 2:
-                base = 40;
+                base = parametros.getTiempoNivel2();
                 break;
             case 3:
-                base = 20;
+                base = parametros.getTiempoNivel3();
                 break;
             default:
-                base = 60;
+                base = parametros.getTiempoNivel1();
         }
         int variacion = random.nextInt(21) - 10;
         return base + variacion;
@@ -323,7 +330,7 @@ public class VistaDePartida extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCambiarDeEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarDeEstadoActionPerformed
-
+        aplicarEventoAlBoton();
         int fila = jTable1.getSelectedRow();
 
         if (fila == -1) {
@@ -402,6 +409,25 @@ public class VistaDePartida extends javax.swing.JFrame {
         actualizarPuntos();
         
     }//GEN-LAST:event_btnCancelarPedidoActionPerformed
+   
+    private void aplicarEventoAlBoton(){
+        int tiempoRandom = 2000 + random.nextInt(3000);
+        btnCambiarDeEstado.setEnabled(false);
+        
+         new Thread(() -> {
+        try {
+            Thread.sleep(tiempoRandom);
+        } catch (InterruptedException e) {
+        }
+
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            if(turnoActivo){
+                btnCambiarDeEstado.setEnabled(true);
+            }
+        });
+        }).start();
+    }
+    
     private void iniciarTiempoDeTurno(int segundosTotal){
        Thread hilo = new Thread(()->{
           for(int i = segundosTotal; i >=0; i--){

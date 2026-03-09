@@ -68,3 +68,12 @@ CREATE TABLE partida (
     FOREIGN KEY(id_sucursal) REFERENCES sucursal(id_sucursal)
 );
 
+CREATE TABLE parametros_juego(
+    id_parametro INT AUTSELEO_INCREMENT PRIMARY KEY,
+    id_sucursal INT,
+    tiempo_nivel1 INT,
+    tiempo_nivel2 INT,
+    tiempo_nivel3 INT,
+    tiempo_generacion_pedido INT,
+    FOREIGN KEY (id_sucursal) REFERENCES sucursal(id_sucursal)
+);

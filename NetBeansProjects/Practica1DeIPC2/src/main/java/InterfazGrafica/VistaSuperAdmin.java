@@ -39,7 +39,7 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         btnAsignarUsuarioASucursal = new javax.swing.JButton();
         btnConsultarEstadisticasGlobales = new javax.swing.JButton();
         btnVisualizarRankingGeneral = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnAdministrarParametrosGenerales = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         labelNombreJugador = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -107,22 +107,27 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
         });
         getContentPane().add(btnVisualizarRankingGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 410, 610, 50));
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 204));
-        jButton6.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Administrar Parametros Generales Del Juego");
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 490, -1, 50));
+        btnAdministrarParametrosGenerales.setBackground(new java.awt.Color(204, 204, 204));
+        btnAdministrarParametrosGenerales.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
+        btnAdministrarParametrosGenerales.setForeground(new java.awt.Color(0, 0, 0));
+        btnAdministrarParametrosGenerales.setText("Administrar Parametros Generales Del Juego");
+        btnAdministrarParametrosGenerales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministrarParametrosGeneralesActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdministrarParametrosGenerales, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 490, -1, 50));
 
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Regresar");
+        jButton1.setText("Cerrar Sesion");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 570, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 570, -1, -1));
 
         labelNombreJugador.setBackground(new java.awt.Color(0, 0, 0));
         labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
@@ -184,14 +189,20 @@ public class VistaSuperAdmin extends javax.swing.JFrame {
            
     }//GEN-LAST:event_btnVisualizarRankingGeneralActionPerformed
 
+    private void btnAdministrarParametrosGeneralesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarParametrosGeneralesActionPerformed
+        VistaModificarParametrosGenerales vista = new VistaModificarParametrosGenerales();
+        vista.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAdministrarParametrosGeneralesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdministrarParametrosGenerales;
     private javax.swing.JButton btnAsignarUsuarioASucursal;
     private javax.swing.JButton btnConsultarEstadisticasGlobales;
     private javax.swing.JButton btnCrearUsuaios;
     private javax.swing.JButton btnCrearYModificarSucursales;
     private javax.swing.JButton btnVisualizarRankingGeneral;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelNombreJugador;

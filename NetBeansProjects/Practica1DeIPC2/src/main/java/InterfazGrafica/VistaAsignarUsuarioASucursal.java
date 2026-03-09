@@ -101,7 +101,7 @@ public class VistaAsignarUsuarioASucursal extends javax.swing.JFrame {
         jLabel1.setText("Seleccione Sucursal: ");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 600, -1, -1));
 
-        btnAsiganar.setText("Asiganar");
+        btnAsiganar.setText("Asignar");
         btnAsiganar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAsiganarActionPerformed(evt);

@@ -20,7 +20,7 @@ public class VistaAdmin extends javax.swing.JFrame {
      */
     public VistaAdmin(String nombreJugador, int idSucursal) {
         initComponents();
-        this.nombreJugador = this.nombreJugador;
+        this.nombreJugador = nombreJugador;
         this.idSucursal = idSucursal;
         labelNombreJugador.setText(nombreJugador);
         this.setLocationRelativeTo(null);
@@ -79,13 +79,13 @@ public class VistaAdmin extends javax.swing.JFrame {
         });
         getContentPane().add(btnConsultarRankingJugadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 370, 340, 50));
 
-        btnSalir.setText("SALIR");
+        btnSalir.setText("Cerrar Sesion");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 470, 100, 40));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 470, 140, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 640));

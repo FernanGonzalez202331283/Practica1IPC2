@@ -20,6 +20,7 @@ public class FrmUsuario extends javax.swing.JFrame {
     public FrmUsuario() {
         initComponents();
         cargarRoles();
+        this.setLocationRelativeTo(null);
     }
 
     /**

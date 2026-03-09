@@ -65,13 +65,13 @@ public class VistaJugador extends javax.swing.JFrame {
         btnRegresar.setBackground(new java.awt.Color(204, 204, 204));
         btnRegresar.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 24)); // NOI18N
         btnRegresar.setForeground(new java.awt.Color(0, 0, 0));
-        btnRegresar.setText("Regresar");
+        btnRegresar.setText("Cerrar Sesion");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 160, 70));
+        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 220, 70));
 
         labelNombreJugador.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
         getContentPane().add(labelNombreJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 270, 40));
