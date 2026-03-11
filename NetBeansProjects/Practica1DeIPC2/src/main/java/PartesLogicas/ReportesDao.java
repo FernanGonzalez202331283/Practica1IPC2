@@ -23,7 +23,9 @@ public class ReportesDao {
                      u.nombre,
                      p.puntaje_total,
                      p.nivel_alcanzado,
-                     p.pedidos_completados
+                     p.pedidos_completados,
+                     p.pedidos_cancelados,
+                     p.pedidos_no_entregados
                      FROM partida p
                      JOIN usuario u ON p.id_jugador = u.id_usuario
                      WHERE p.id_sucursal = ?
@@ -72,12 +74,16 @@ public class ReportesDao {
 
         Connection con = DBConexion.getConnection();
 
-        String sql = "SELECT " +
-                     "COUNT(*) AS total_partidas, " +
-                     "AVG(puntaje_total) AS promedio_puntos, " +
-                     "MAX(puntaje_total) AS mejor_puntaje, " +
-                     "SUM(pedidos_completados) AS total_pedidos " +
-                     "FROM partida";
+        String sql = """
+                      SELECT
+                      COUNT(*) AS total_partidas,
+                      AVG(puntaje_total) AS promedio_puntos,
+                      MAX(puntaje_total) AS mejor_puntaje,
+                      SUM(pedidos_completados) AS total_pedidos_completados,
+                      SUM(pedidos_cancelados) AS total_pedidos_cancelados,
+                      SUM(pedidos_no_entregados) AS total_pedidos_no_entregados
+                      FROM partida
+                     """;
 
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -98,7 +104,7 @@ public class ReportesDao {
                      u.nombre,
                      s.nombre AS sucursal,
                      j.puntos,
-                     j. nivel,
+                     j.nivel,
                      j.partidas_jugadas
                      FROM jugador j
                      JOIN usuario u ON j.id_jugador = u.id_usuario

@@ -13,12 +13,13 @@ import java.sql.PreparedStatement;
  * @author fernan
  */
 public class PartidaDAO {
-    public void guardarPartida(int idJugador, int idSucursal, int puntaje, int nivel, int pedidosCompletados){
+    public void guardarPartida(int idJugador, int idSucursal, int puntaje, int nivel, int pedidosCompletados, int pedidosCancelados, int pedidosNoEntregados){
         try (Connection con = DBConexion.getConnection()){
             String sql = """
                          INSERT INTO partida
-                         (id_jugador, id_sucursal, puntaje_total, nivel_alcanzado, pedidos_completados)
-                         VALUES (?,?,?,?,?)
+                         (id_jugador, id_sucursal, puntaje_total, nivel_alcanzado,
+                          pedidos_completados, pedidos_cancelados, pedidos_no_entregados)
+                         VALUES (?,?,?,?,?,?,?)
                          """;
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idJugador);
@@ -26,6 +27,8 @@ public class PartidaDAO {
             ps.setInt(3, puntaje);
             ps.setInt(4, nivel);
             ps.setInt(5, pedidosCompletados);
+            ps.setInt(6, pedidosCancelados);
+            ps.setInt(7, pedidosNoEntregados);
             
             ps.executeUpdate();
             con.close();

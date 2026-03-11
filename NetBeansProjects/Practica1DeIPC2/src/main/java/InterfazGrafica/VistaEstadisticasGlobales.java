@@ -41,6 +41,8 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
         labelTotalPedidos = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        labelPedidosCancelados = new javax.swing.JLabel();
+        labelPedidosNoEntregados = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,15 +64,17 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
                 btnRegresarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 500, 130, 60));
+        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 680, 130, 60));
 
         jLabel2.setFont(new java.awt.Font("Ubuntu Sans Mono", 3, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("CONSULTAS DE ESTADISTICAS GLOBALES");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 760, 60));
+        getContentPane().add(labelPedidosCancelados, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 468, 330, 50));
+        getContentPane().add(labelPedidosNoEntregados, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 580, 300, 60));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada (3).png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, 620));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -99,7 +103,11 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
 
             labelMejorPuntaje.setText("Mejor puntaje: " + rs.getInt("mejor_puntaje"));
 
-            labelTotalPedidos.setText("Pedidos entregados: " + rs.getInt("total_pedidos"));
+            labelTotalPedidos.setText("Pedidos entregados: " + rs.getInt("total_pedidos_completados"));
+            
+            labelPedidosCancelados.setText("Pedidos cancelados: " + rs.getInt("total_pedidos_cancelados"));
+            
+            labelPedidosNoEntregados.setText("Pedidos no entregados: " + rs.getInt("total_pedidos_no_entregados"));
         }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar estadísticas");
@@ -110,6 +118,8 @@ public class VistaEstadisticasGlobales extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelMejorPuntaje;
+    private javax.swing.JLabel labelPedidosCancelados;
+    private javax.swing.JLabel labelPedidosNoEntregados;
     private javax.swing.JLabel labelPromedioPuntos;
     private javax.swing.JLabel labelTotalPartidas;
     private javax.swing.JLabel labelTotalPedidos;

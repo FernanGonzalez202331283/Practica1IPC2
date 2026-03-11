@@ -48,7 +48,9 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
                     rs.getString("nombre"),
                     rs.getInt("puntaje_total"),
                     rs.getInt("nivel_alcanzado"),
-                    rs.getInt("pedidos_completados")
+                    rs.getInt("pedidos_completados"),
+                    rs.getInt("pedidos_cancelados"),
+                    rs.getInt("pedidos_no_entregados")
                 };
                 // agrega la fila a la tabla
                 modelo.addRow(fila);
@@ -84,12 +86,12 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Jugador", "Puntaje", "Nivel Alcanzado", "Pedidos Completados"
+                "Jugador", "Puntaje", "Nivel Alcanzado", "Pedidos Completados", "Pedidos Cancelados", "Pedidos No entregados"
             }
         ));
         jScrollPane1.setViewportView(tablaPartidas);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 700, 554));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 950, 554));
 
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +115,7 @@ public class VistaEstadisticaDePartidas extends javax.swing.JFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Imagen pegada (2).png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 730));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

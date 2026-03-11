@@ -513,8 +513,36 @@ public class VistaDePartida extends javax.swing.JFrame {
         }
     }
     private void guardarPartida(){
+        int entregados = 0;
+        int cancelados = 0;
+        int noEntregados = 0;
+        
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            String estado = jTable1.getValueAt(i, 1).toString();
+            
+            switch(estado){
+                case "ENTREGADA":
+                    entregados++;
+                    break;
+                case "CANCELADA":
+                    cancelados++;
+                    break;
+                case "NO_ENTREGADO":
+                    noEntregados++;
+                    break;
+            }
+            
+        }
+        
         PartesLogicas.PartidaDAO partidaDAO = new PartesLogicas.PartidaDAO();
-        partidaDAO.guardarPartida(idJugador, idSucursal, puntos, nivelActual, pedidosEntregados);
+        partidaDAO.guardarPartida(
+                idJugador,
+                idSucursal,
+                puntos,
+                nivelActual,
+                entregados,
+                cancelados,
+                noEntregados);
 
         PartesLogicas.JugadorDAO jugadorDAO = new PartesLogicas.JugadorDAO();
         jugadorDAO.actualizarJugador(idJugador, puntos, nivelActual);

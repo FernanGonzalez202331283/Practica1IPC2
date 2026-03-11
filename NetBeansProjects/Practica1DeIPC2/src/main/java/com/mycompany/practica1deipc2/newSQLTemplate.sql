@@ -64,12 +64,15 @@ CREATE TABLE partida (
     puntaje_total INT,
     nivel_alcanzado INT,
     pedidos_completados INT,
+    pedidos_cancelados INT DEFAULT 0,
+    pedidos_no_entregados INT DEFAULT 0,
+    tiempo_total_preparacion INT DEFAULT 0,
     FOREIGN KEY(id_jugador) REFERENCES jugador(id_jugador),
     FOREIGN KEY(id_sucursal) REFERENCES sucursal(id_sucursal)
 );
 
 CREATE TABLE parametros_juego(
-    id_parametro INT AUTSELEO_INCREMENT PRIMARY KEY,
+    id_parametro INT AUTO_INCREMENT PRIMARY KEY,
     id_sucursal INT,
     tiempo_nivel1 INT,
     tiempo_nivel2 INT,
@@ -77,3 +80,9 @@ CREATE TABLE parametros_juego(
     tiempo_generacion_pedido INT,
     FOREIGN KEY (id_sucursal) REFERENCES sucursal(id_sucursal)
 );
+
+
+ALTER TABLE partida
+ADD pedidos_cancelados INT DEFAULT 0,
+ADD pedidos_no_entregados INT DEFAULT 0,
+ADD tiempo_total_preparacion INT DEFAULT 0;
