@@ -20,6 +20,7 @@ import javax.swing.table.TableCellRenderer;
  * @author fernan
  */
 public class VistaDePartida extends javax.swing.JFrame {
+
     private String nombreJugador;
     private int idJugador;
     private Thread hiloGenerador;
@@ -31,22 +32,25 @@ public class VistaDePartida extends javax.swing.JFrame {
     private java.util.Random random = new java.util.Random();
     private int idSucursal;
     private ParametrosJuego parametros;
+    private int[]tiemposIniciales = new int[MAX_PEDIDOS];
+
     /**
      * Creates new form VistaDePartida
      */
-    public VistaDePartida(int idJugador,String nombreJugador, int idSucursal) {
+ 
+    public VistaDePartida(int idJugador, String nombreJugador, int idSucursal) {
         initComponents();
         this.nombreJugador = nombreJugador;
         this.idSucursal = idSucursal;
         this.idJugador = idJugador;
-        
+
         labelNombreJugador.setText(nombreJugador);
-        labelNivel.setText("Nivel: "+nivelActual);
-        labelPuntos.setText("Puntos: "+puntos);
-        
+        labelNivel.setText("Nivel: " + nivelActual);
+        labelPuntos.setText("Puntos: " + puntos);
+
         ParametrosJuegoDAO dao = new ParametrosJuegoDAO();
         parametros = dao.obtenerParametros(idSucursal);
-        
+
         configurarTabla();
         configurarBarra();
         iniciarGeneradorPedidos();
@@ -54,15 +58,15 @@ public class VistaDePartida extends javax.swing.JFrame {
     }
 
     private void iniciarGeneradorPedidos() {
-        hiloGenerador = new Thread(()->{
-            while(turnoActivo){
+        hiloGenerador = new Thread(() -> {
+            while (turnoActivo) {
                 try {
                     Thread.sleep(parametros.getTiempoGeneracionPedidos() * 1000);
-                } catch (InterruptedException ex) {
+                } catch (InterruptedException ex) { // 
                     break;
                 }
-                javax.swing.SwingUtilities.invokeLater(()->{
-                    if(turnoActivo && jTable1.getRowCount() < MAX_PEDIDOS){
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    if (turnoActivo && jTable1.getRowCount() < MAX_PEDIDOS) {
                         generarPedido();
                     }
                 });
@@ -73,25 +77,26 @@ public class VistaDePartida extends javax.swing.JFrame {
 
     private void generarPedido() {
         PartesLogicas.ProductoDAO dao = new PartesLogicas.ProductoDAO();
-        java.util.List<PartesLogicas.Producto> productosActivos =
-                dao.obtenerProductosActivosPorSucursal(idSucursal);
-        
-        if(productosActivos.isEmpty()){
+        java.util.List<PartesLogicas.Producto> productosActivos
+                = dao.obtenerProductosActivosPorSucursal(idSucursal);
+
+        if (productosActivos.isEmpty()) {
             return;
         }
-        
-        PartesLogicas.Producto productoAleatorio =
-                productosActivos.get(random.nextInt(productosActivos.size()));
+
+        PartesLogicas.Producto productoAleatorio
+                = productosActivos.get(random.nextInt(productosActivos.size()));
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         int tiempoBase = obtenerTiempoSegunNivel();
         int tiempoInicial = tiempoBase;
-        
+
         modelo.addRow(new Object[]{
             productoAleatorio.getNombre(),
             "RECIBIDA",
             tiempoInicial
         });
-        int nuevaFila = modelo.getRowCount()-1;
+        int nuevaFila = modelo.getRowCount() - 1;
+        tiemposIniciales[nuevaFila]= tiempoInicial;
         iniciarTiempoFila(nuevaFila);
     }
 
@@ -126,8 +131,10 @@ public class VistaDePartida extends javax.swing.JFrame {
                     } else {
                         jTable1.setValueAt("NO_ENTREGADO", fila, 1);
                         jTable1.setValueAt(0, fila, 2);
-                        puntos -=50;
-                        if(puntos<0)puntos =0;
+                        puntos -= 50;
+                        if (puntos < 0) {
+                            puntos = 0;
+                        }
                         actualizarPuntos();
                         return;
                     }
@@ -136,11 +143,11 @@ public class VistaDePartida extends javax.swing.JFrame {
         });
         hilo.start();
     }
-    
-    private int obtenerTiempoSegunNivel(){
+
+    private int obtenerTiempoSegunNivel() {
         int base;
-        
-        switch(nivelActual){
+
+        switch (nivelActual) {
             case 1:
                 base = parametros.getTiempoNivel1();
                 break;
@@ -156,7 +163,7 @@ public class VistaDePartida extends javax.swing.JFrame {
         int variacion = random.nextInt(21) - 10;
         return base + variacion;
     }
-    
+
     private void configurarTabla() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new Object[][]{},
@@ -349,11 +356,15 @@ public class VistaDePartida extends javax.swing.JFrame {
                 break;
             case "EN_HORNO":
                 jTable1.setValueAt("ENTREGADA", fila, 1);
+                
                 int tiempoRestante = (int) jTable1.getValueAt(fila, 2);
+                int tiempoInicial = tiemposIniciales[fila];
+                
                 jTable1.setValueAt(0, fila, 2);
-                puntos+=100;
-                if(tiempoRestante > 40){
-                    puntos+=50;
+                puntos += 100;
+                
+                if (tiempoRestante >= tiempoInicial/2) {
+                    puntos += 50;
                 }
                 actualizarPuntos();
                 pedidosEntregados++;
@@ -366,23 +377,24 @@ public class VistaDePartida extends javax.swing.JFrame {
                 break;
         }
     }//GEN-LAST:event_btnCambiarDeEstadoActionPerformed
-    private void actualizarPuntos(){
+    private void actualizarPuntos() {
         labelPuntos.setText("Puntos: " + puntos);
     }
-    private void verificarSubidaDeNivel(){
-        if(nivelActual == 1 && pedidosEntregados >=10){
+
+    private void verificarSubidaDeNivel() {
+        if (nivelActual == 1 && (pedidosEntregados >= 13 || puntos >= 1000)) {
             subirNivel();
-        }else if(nivelActual == 2 && pedidosEntregados >=15){
+        } else if (nivelActual == 2 && (pedidosEntregados >= 18 || puntos >= 2000)) {
             subirNivel();
         }
     }
-    
-    private void subirNivel(){
+
+    private void subirNivel() {
         nivelActual++;
         labelNivel.setText("Nivel: " + nivelActual);
-        JOptionPane.showMessageDialog(this, "Subiste de nivel, ahora tu nivel es "+nivelActual+
-                " ahora los pedidos tendran menos tiempo");
-        puntos+=200;
+        JOptionPane.showMessageDialog(this, "Subiste de nivel, ahora tu nivel es " + nivelActual
+                + " ahora los pedidos tendran menos tiempo");
+        puntos += 200;
         actualizarPuntos();
     }
     private void btnCancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPedidoActionPerformed
@@ -394,86 +406,89 @@ public class VistaDePartida extends javax.swing.JFrame {
 
         String estadoActual = (String) jTable1.getValueAt(fila, 1);
 
-        // 
         if (!estadoActual.equals("RECIBIDA")
-            && !estadoActual.equals("PREPARANDO")) {
+                && !estadoActual.equals("PREPARANDO")) {
             return;
         }
 
         // Cambiar estado
         jTable1.setValueAt("CANCELADA", fila, 1);
         jTable1.setValueAt(0, fila, 2);
-        
-        puntos -=20;
-        if(puntos<0)puntos =0;
+
+        puntos -= 30;
+        if (puntos < 0) {
+            puntos = 0;
+        }
         actualizarPuntos();
-        
+
     }//GEN-LAST:event_btnCancelarPedidoActionPerformed
-   
-    private void aplicarEventoAlBoton(){
+
+    private void aplicarEventoAlBoton() {
         int tiempoRandom = random.nextInt(2000);
         btnCambiarDeEstado.setEnabled(false);
-        
-         new Thread(() -> {
-        try {
-            Thread.sleep(tiempoRandom);
-        } catch (InterruptedException e) {
-        }
 
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            if(turnoActivo){
-                btnCambiarDeEstado.setEnabled(true);
+        new Thread(() -> {
+            try {
+                Thread.sleep(tiempoRandom);
+            } catch (InterruptedException e) {
             }
-        });
+
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                if (turnoActivo) {
+                    btnCambiarDeEstado.setEnabled(true);
+                }
+            });
         }).start();
     }
-    
-    private void iniciarTiempoDeTurno(int segundosTotal){
-       Thread hilo = new Thread(()->{
-          for(int i = segundosTotal; i >=0; i--){
-              int minutos = i/60;
-              int segundos = i % 60;
-              
-              String tiempoFormato = String.format("%02d:%02d", minutos,segundos);
-              javax.swing.SwingUtilities.invokeLater(()->{
-                  labelTiempoDeTurno.setText(tiempoFormato);
-              });
-              
-              if(i==0){
-                  finalizarTurno();
-                  break;
-              }
-              try {
-                  Thread.sleep(1000);
-              } catch (InterruptedException ex) {
-                  return;
-              }
-          } 
-       });
-       hilo.start();
+
+    private void iniciarTiempoDeTurno(int segundosTotal) {
+        Thread hilo = new Thread(() -> {
+            for (int i = segundosTotal; i >= 0; i--) {
+                int minutos = i / 60;
+                int segundos = i % 60;
+
+                String tiempoFormato = String.format("%02d:%02d", minutos, segundos);
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    labelTiempoDeTurno.setText(tiempoFormato);
+                });
+
+                if (i == 0) {
+                    finalizarTurno();
+                    break;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    return;
+                }
+            }
+        });
+        hilo.start();
     }
-    private void finalizarTurno(){
+
+    private void finalizarTurno() {
         turnoActivo = false;
-        if(hiloGenerador !=null){
+        if (hiloGenerador != null) {
             hiloGenerador.interrupt();
         }
-        
+
         btnCambiarDeEstado.setEnabled(false);
         btnCancelarPedido.setEnabled(false);
-        javax.swing.SwingUtilities.invokeLater(()->{
+        javax.swing.SwingUtilities.invokeLater(() -> {
             marcarPedidosNoEntregados();
             guardarPartida();
             mostrarEstadisticas();
         });
     }
-    private void mostrarEstadisticas(){
-        int entregados =0;
-        int cancelados =0;
-        int noEntregados =0;
-        
-        for (int i = 0; i < jTable1.getRowCount(); i++) {
+
+    private void mostrarEstadisticas() {
+        int entregados = 0;
+        int cancelados = 0;
+        int noEntregados = 0;
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) { // tamaño de la tabla 
             String estado = jTable1.getValueAt(i, 1).toString();
-            switch (estado){
+            switch (estado) {
                 case "ENTREGADA":
                     entregados++;
                     break;
@@ -486,41 +501,46 @@ public class VistaDePartida extends javax.swing.JFrame {
             }
         }
         String mensaje = "RESULTADOS DEL TURNO \n\n"
-                +"Pedidos Entregados: "+entregados +"\n"
-                +"Pedidos Cancelados: "+cancelados +"\n"
-                +"Pedidos No Entregados: "+noEntregados;
+                + "Pedidos Entregados: " + entregados + "\n"
+                + "Pedidos Cancelados: " + cancelados + "\n"
+                + "Pedidos No Entregados: " + noEntregados;
         JOptionPane.showMessageDialog(this, mensaje);
         volverAVistaJugador();
     }
-    
-    private void volverAVistaJugador(){
-        VistaJugador vista = new VistaJugador(idJugador,nombreJugador, idSucursal);
+
+    private void volverAVistaJugador() {
+        VistaJugador vista = new VistaJugador(idJugador, nombreJugador, idSucursal);
         vista.setVisible(true);
         this.dispose();
     }
-    private void marcarPedidosNoEntregados(){
+
+    private void marcarPedidosNoEntregados() {
         for (int i = 0; i < jTable1.getRowCount(); i++) {
             String estado = jTable1.getValueAt(i, 1).toString();
-            
-            if(!estado.equals("ENTREGADA")
-                && !estado.equals("CANCELADA")
-                && !estado.equals("NO_ENTREGADO")){
+
+            if (!estado.equals("ENTREGADA")
+                    && !estado.equals("CANCELADA")
+                    && !estado.equals("NO_ENTREGADO")) {
                 jTable1.setValueAt("NO_ENTREGADO", i, 1);
                 jTable1.setValueAt(0, i, 2);
-                 puntos-=50;
+                puntos -= 50;
+                if(puntos<0){
+                    puntos = 0;
+                }
             }
             actualizarPuntos();
         }
     }
-    private void guardarPartida(){
+
+    private void guardarPartida() {
         int entregados = 0;
         int cancelados = 0;
         int noEntregados = 0;
-        
+
         for (int i = 0; i < jTable1.getRowCount(); i++) {
             String estado = jTable1.getValueAt(i, 1).toString();
-            
-            switch(estado){
+
+            switch (estado) {
                 case "ENTREGADA":
                     entregados++;
                     break;
@@ -531,9 +551,9 @@ public class VistaDePartida extends javax.swing.JFrame {
                     noEntregados++;
                     break;
             }
-            
+
         }
-        
+
         PartesLogicas.PartidaDAO partidaDAO = new PartesLogicas.PartidaDAO();
         partidaDAO.guardarPartida(
                 idJugador,

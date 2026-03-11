@@ -129,7 +129,7 @@ public class Login extends javax.swing.JFrame {
              
              //consulta a MySl para verificar si el usuario y contraseña existen en la base de datos
              String sql = "SELECT id_usuario, rol, id_sucursal FROM usuario WHERE username = ? AND password = ?";
-             PreparedStatement ps = con.prepareStatement(sql); // prepara la culsuta y asigna los valores asignados
+             PreparedStatement ps = con.prepareStatement(sql); 
              ps.setString(1, usuario);
              ps.setString(2, password);
              
@@ -137,7 +137,6 @@ public class Login extends javax.swing.JFrame {
              ResultSet rs = ps.executeQuery();
              // si encuentra al usuario en  la base de datos
              if(rs.next()){
-                 // se obtienen el rol y los datos del usuario 
                  String rol = rs.getString("rol");
                  int idSucursal = rs.getInt("id_sucursal");
                  int idUsuario = rs.getInt("id_usuario");

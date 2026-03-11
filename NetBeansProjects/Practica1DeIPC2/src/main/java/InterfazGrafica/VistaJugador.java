@@ -92,7 +92,6 @@ public class VistaJugador extends javax.swing.JFrame {
         // consulta si la sucursal esta activa
         PartesLogicas.SucursalDAO dao = new PartesLogicas.SucursalDAO();
         boolean activa = dao.estaActiva(idSucursal);
-        // si la sucursal esta inactiva no se puede iniciar una partida
         if(!activa){
             javax.swing.JOptionPane.showMessageDialog(this, "tu sucursal esta inactiva. no puedes jugar");
             return;
