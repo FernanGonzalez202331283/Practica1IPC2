@@ -382,9 +382,9 @@ public class VistaDePartida extends javax.swing.JFrame {
     }
 
     private void verificarSubidaDeNivel() {
-        if (nivelActual == 1 && (pedidosEntregados >= 13 || puntos >= 1000)) {
+        if (nivelActual == 1 && (pedidosEntregados >= 13 || puntos >= 900)) {
             subirNivel();
-        } else if (nivelActual == 2 && (pedidosEntregados >= 18 || puntos >= 2000)) {
+        } else if (nivelActual == 2 && (pedidosEntregados >= 18 || puntos >= 1500)) {
             subirNivel();
         }
     }
