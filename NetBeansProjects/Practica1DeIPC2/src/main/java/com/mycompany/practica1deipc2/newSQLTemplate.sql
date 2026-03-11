@@ -27,6 +27,9 @@ CREATE TABLE usuario (
     FOREIGN KEY(id_sucursal) REFERENCES sucursal(id_sucursal)
 );
 
+INSERT INTO usuario (nombre, username, password, rol, id_sucursal)
+VALUES ('Fernando González', 'superadmin', '1234', 'SUPERADMIN', NULL);
+
 CREATE TABLE jugador (
     id_jugador INT PRIMARY KEY,
     puntos INT DEFAULT 0,
