@@ -13,17 +13,16 @@ import java.sql.SQLException;
  * @author fernan
  */
 public class DBConexion {
-    private static final String IP = "localhost";
-    private static final int PUERTO = 3306;
+     private static final String URL = "jdbc:mysql://localhost:3306/Pizzeria";
     private static final String USER_NAME = "root";
-    private static final String SCHEMA = "Pizzeria";
     private static final String PASSWORD = "Fernan16@2026";
-    // ruta para acceder a la base de datos
-    private static final String URL = "jdbc:mysql://"+ IP + ":"+ PUERTO + "/" + SCHEMA +
-            "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        } catch (SQLException e) {
+            System.out.println("Error al conectar con la base de datos: " + e);
+        }
+        return null;
     }
     
 }

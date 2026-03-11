@@ -80,9 +80,3 @@ CREATE TABLE parametros_juego(
     tiempo_generacion_pedido INT,
     FOREIGN KEY (id_sucursal) REFERENCES sucursal(id_sucursal)
 );
-
-
-ALTER TABLE partida
-ADD pedidos_cancelados INT DEFAULT 0,
-ADD pedidos_no_entregados INT DEFAULT 0,
-ADD tiempo_total_preparacion INT DEFAULT 0;

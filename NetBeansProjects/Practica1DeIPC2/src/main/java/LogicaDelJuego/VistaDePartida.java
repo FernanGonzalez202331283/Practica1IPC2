@@ -411,7 +411,7 @@ public class VistaDePartida extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarPedidoActionPerformed
    
     private void aplicarEventoAlBoton(){
-        int tiempoRandom = 1000 + random.nextInt(1000);
+        int tiempoRandom = random.nextInt(2000);
         btnCambiarDeEstado.setEnabled(false);
         
          new Thread(() -> {
